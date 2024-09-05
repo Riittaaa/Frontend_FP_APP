@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../images/fleetpanda.png";
+import logo from "../images/logo.png";
 import "../css/Navbar.css";
 
 function Navbar() {
@@ -17,7 +17,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <Link to="/" className="navbar__logo" onClick={closeMenu}>
-        <img src={logo} alt="Fleetpanda" className="navbar__logo-img" />
+        <img src={logo} alt="Logo" className="navbar__logo-img" />
       </Link>
 
       <div className="navbar__menu-icon" onClick={toggleMenu}>
