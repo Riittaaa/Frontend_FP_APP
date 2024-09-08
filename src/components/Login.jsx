@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import "../css/Login.css";
+import { FETCH_GROUP } from "../graphql/queries";
+import { LOGIN_USER } from "../graphql/mutations";
+import { useQuery, useMutation } from "@apollo/client";
+import { useDispatch } from "react-redux";
+import { loginSuccess, loginFailure } from "../store/authSlice";
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [group, setGroup] = useState("");
+
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const dispatch = useDispatch();
+
+  const {
+    data: groupData,
+    loading: groupLoading,
+    error: groupError,
+  } = useQuery(FETCH_GROUP);
+  const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -37,11 +52,36 @@ function Login() {
     return isValid;
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const isValid = validateInput(email, password);
     if (isValid) {
-      console.log("Form submitted");
+      try {
+        const { data } = await loginUser({
+          variables: {
+            email,
+            password,
+            groupId: group,
+          },
+        });
+
+        if (data.loginUser.token) {
+          dispatch(
+            loginSuccess({
+              user: data.loginUser.user,
+              token: data.loginUser.token,
+            })
+          );
+          localStorage.setItem("token", data.loginUser.token);
+          console.log("Login Successful");
+        } else {
+          dispatch(loginFailure(data.loginUser.error));
+          console.error("Login failed:", data.loginUser.error);
+        }
+      } catch (err) {
+        dispatch(loginFailure(err.message));
+        console.error("Error:", err.message);
+      }
     }
   };
 
@@ -92,8 +132,30 @@ function Login() {
             {passwordError && <p className="login__error">{passwordError}</p>}
           </div>
 
-          <button type="submit" className="login__button">
-            Login
+          <div className="login__input-group">
+            <label htmlFor="group" className="login__label">
+              Select Group
+            </label>
+            <select
+              className="login__input"
+              id="grooup"
+              value={group}
+              onChange={(e) => setGroup(e.target.value)}
+            >
+              <option value="">Select a group</option>
+              {!groupLoading &&
+                groupData?.allGroups?.group &&
+                groupData?.allGroups?.group.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
+                ))}
+            </select>
+            {groupError && <p className="login__error">{groupError.message}</p>}
+          </div>
+
+          <button type="submit" className="login__button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
 
           {/* <p className="login__signup-prompt">
