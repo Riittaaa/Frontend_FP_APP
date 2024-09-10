@@ -12,3 +12,21 @@ export const FETCH_GROUP = gql`
     }
   }
 `;
+
+export const FETCH_VEHICLES = gql`
+  query vehicleResult {
+    vehicles {
+      vehicle {
+        id
+        brand
+        capacity
+        groupId
+        licensePlate
+        status
+        vehicleType
+      }
+      errors
+      message
+    }
+  }
+`;

@@ -15,3 +15,20 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const CREATE_VEHICLE = gql`
+  mutation CreateVehicle($createVehicle: CreateVehicleInput!) {
+    createVehicle(input: $createVehicle) {
+      vehicle {
+        licensePlate
+        brand
+        vehicleType
+        status
+        capacity
+        groupId
+      }
+      errors
+      message
+    }
+  }
+`;

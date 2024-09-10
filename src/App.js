@@ -10,6 +10,8 @@ import { ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import store from "./store/store";
 import { Provider } from "react-redux";
+import AddVehicle from "./components/vehicles/AddVehicle";
+import ViewVehicles from "./components/vehicles/ViewVehicles";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/addVehicle" element={<AddVehicle />} />
+              <Route path="/vehicles" element={<ViewVehicles />} />
             </Routes>
           </Router>
         </Provider>
