@@ -1,0 +1,32 @@
+.goods {
+  margin: 20px;
+}
+
+.goods__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.goods__heading-title {
+  margin: 0;
+}
+
+.goods__add-button {
+  background-color: #f39c12;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.goods__add-button:hover {
+  background-color: #e67e22;
+}
+
+.goods__table {
+  height: calc(100vh - 100px);
+  width: 100%;
+}

@@ -46,3 +46,20 @@ export const FETCH_VEHICLE = gql`
     }
   }
 `;
+
+export const FETCH_GOODS = gql`
+  query goodsResult {
+    goods {
+      goods {
+        id
+        name
+        availability
+        category
+        soldAs
+        unit
+      }
+      errors
+      message
+    }
+  }
+`;
