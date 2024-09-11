@@ -45,8 +45,8 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/assets" onClick={closeMenu}>
-            <i className="fas fa-truck"></i> Assets
+          <Link to="/vehicles" onClick={closeMenu}>
+            <i className="fas fa-truck"></i> Vehicles
           </Link>
         </li>
         <li>
