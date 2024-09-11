@@ -1,15 +1,16 @@
 .goods {
+  height: calc(100vh - 50px);
   margin: 20px;
 }
 
-.goods__heading {
+.goods__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.goods__heading-title {
+.goods__title {
   margin: 0;
 }
 
@@ -31,13 +32,15 @@
   width: 100%;
 }
 
-.add-goods {
+.add-goods,
+.edit-goods {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.add-goods__container {
+.add-goods__container,
+.edit-goods__container {
   width: 100%;
   align-items: center;
   max-width: 400px;
@@ -49,7 +52,8 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.add-goods__heading {
+.add-goods__heading,
+.edit-goods__heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,22 +64,27 @@
   margin: 0;
 }
 
-.add-goods__form {
+.add-goods__form,
+.edit-goods__form {
   width: 100%;
 }
 
-.add-goods__form-group {
+.add-goods__form-group,
+.edit-goods__form-group {
   margin-bottom: 15px;
 }
 
-.add-goods__label {
+.add-goods__label,
+.edit-goods__label {
   display: block;
   margin-bottom: 5px;
   color: #bdbdbd;
 }
 
 .add-goods__input,
-.add-goods__select {
+.add-goods__select,
+.edit-goods__input,
+.edit-goods__select {
   width: 100%;
   padding: 8px;
   background-color: #2c2c2c;
@@ -85,12 +94,15 @@
 }
 
 .add-goods__input:focus,
-.add-goods__select:focus {
+.add-goods__select:focus,
+.edit-goods__input:focus,
+.edit-goods__select:focus {
   outline: none;
   border-color: #1e88e5;
 }
 
-.add-goods__submit-button {
+.add-goods__submit-button,
+.edit-goods__submit-button {
   width: 100%;
   padding: 12px;
   background-color: #f39c12;
@@ -100,13 +112,41 @@
   cursor: pointer;
 }
 
-.add-goods__submit-button:hover {
+.add-goods__submit-button:hover,
+.edit-goods__submit-button:hover {
   background-color: #e67e22;
 }
 
-.add-goods__link {
+.add-goods__link,
+.edit-goods__link {
   margin-top: 6px;
   display: flex;
   justify-content: center;
   color: #f39c12;
+}
+
+.goods__actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.goods__action-button {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.goods__action-button:hover {
+  opacity: 0.8;
+}
+
+.goods__action-button--edit {
+  background-color: #4caf50;
+}
+
+.goods__action-button--delete {
+  background-color: #f44336;
 }

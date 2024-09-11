@@ -76,3 +76,33 @@ export const CREATE_GOODS = gql`
     }
   }
 `;
+
+export const UPDATE_GOODS = gql`
+  mutation UpdateGoods($goodsInput: UpdateGoodsInput!) {
+    updateGoods(input: $goodsInput) {
+      goods {
+        id
+        name
+        category
+        availability
+        soldAs
+        unit
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const DELETE_GOODS = gql`
+  mutation deleteGoods($id: DeleteGoodsInput!) {
+    deleteGoods(input: $id) {
+      goods {
+        id
+        name
+      }
+      message
+      errors
+    }
+  }
+`;

@@ -63,3 +63,20 @@ export const FETCH_GOODS = gql`
     }
   }
 `;
+
+export const FETCH_SPECIFIC_GOODS = gql`
+  query SpecificGoods($goodsId: ID!) {
+    specificGoods(goodsId: $goodsId) {
+      goods {
+        name
+        id
+        availability
+        category
+        soldAs
+        unit
+      }
+      errors
+      message
+    }
+  }
+`;
