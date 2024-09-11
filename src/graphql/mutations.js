@@ -61,3 +61,18 @@ export const DELETE_VEHICLE = gql`
     }
   }
 `;
+
+export const CREATE_GOODS = gql`
+  mutation CreateGoods($goodsInput: CreateGoodsInput!) {
+    createGoods(input: $goodsInput) {
+      goods {
+        id
+        name
+        category
+        availability
+      }
+      message
+      errors
+    }
+  }
+`;
