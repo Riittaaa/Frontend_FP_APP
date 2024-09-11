@@ -12,6 +12,7 @@ import store from "./store/store";
 import { Provider } from "react-redux";
 import AddVehicle from "./components/vehicles/AddVehicle";
 import ViewVehicles from "./components/vehicles/ViewVehicles";
+import EditVehicle from "./components/vehicles/EditVehicle";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/addVehicle" element={<AddVehicle />} />
               <Route path="/vehicles" element={<ViewVehicles />} />
+              <Route path="/editVehicle/:vehicleId" element={<EditVehicle />} />
             </Routes>
           </Router>
         </Provider>

@@ -76,6 +76,7 @@
   /* height: calc(100vh - 50px); */
   margin: 20px;
 }
+
 .ag-heading {
   display: flex;
   justify-content: space-between;
@@ -99,3 +100,31 @@
   background-color: #e67e22;
 }
 
+.actions-cell {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  opacity: 0.8;
+}

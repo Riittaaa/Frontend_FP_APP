@@ -30,3 +30,19 @@ export const FETCH_VEHICLES = gql`
     }
   }
 `;
+
+export const FETCH_VEHICLE = gql`
+  query specificVehicle($vehicleId: ID!) {
+    specificVehicle(vehicleId: $vehicleId) {
+      vehicle {
+        id
+        brand
+        capacity
+        groupId
+        licensePlate
+        status
+        vehicleType
+      }
+    }
+  }
+`;

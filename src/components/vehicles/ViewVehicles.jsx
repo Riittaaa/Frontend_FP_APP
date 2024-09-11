@@ -4,12 +4,14 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { FETCH_VEHICLES } from "../../graphql/queries";
+import { DELETE_VEHICLE } from "../../graphql/mutations";
 
 function ViewVehicles() {
   const navigate = useNavigate();
   const { loading, error, data } = useQuery(FETCH_VEHICLES);
+  const [deleteVehicle] = useMutation(DELETE_VEHICLE);
   const [rowData, setRowData] = useState([]);
 
   useEffect(() => {
@@ -22,9 +24,56 @@ function ViewVehicles() {
     navigate("/addVehicle");
   };
 
+  const handleEdit = (vehicleId) => {
+    navigate(`/editVehicle/${vehicleId}`);
+  };
+
+  const handleDelete = async (vehicleId) => {
+    if (window.confirm("Are you sure you want to delete this vehicle?")) {
+      try {
+        const response = await deleteVehicle({
+          variables: {
+            deleteVehicleInput: {
+              vehicleId: parseInt(vehicleId),
+            },
+          },
+        });
+
+        if (response && response.data.deleteVehicle.message) {
+          setRowData((prevData) =>
+            prevData.filter((vehicle) => vehicle.id !== vehicleId)
+          );
+          console.log(response.data.deleteVehicle.message);
+        } else {
+          console.log("Error", response.data.deleteVehicle.errors);
+        }
+      } catch (err) {
+        console.error("Error deleting vehicle:", err);
+      }
+    }
+  };
+
+  const ActionCellRenderer = (params) => {
+    return (
+      <div className="actions-cell">
+        <button
+          className="edit-button"
+          onClick={() => handleEdit(params.data.id)}
+        >
+          Edit
+        </button>
+        <button
+          className="delete-button"
+          onClick={() => handleDelete(params.data.id)} // Ensure params.data.id is correct
+        >
+          Delete
+        </button>
+      </div>
+    );
+  };
+
   const [colDefs, setColDefs] = useState([
-    // { field: "id", headerName: "ID", sortable: true, sort: "asc" },
-    { field: "id", headerName: "Id", flex: 1, sortable: true }, // Default sorting by name
+    { field: "id", headerName: "Id", flex: 1, sortable: true },
     { field: "brand", headerName: "Brand", flex: 1, sortable: true },
     { field: "capacity", headerName: "Capacity", flex: 1, sortable: true },
     { field: "groupId", headerName: "Group Id", flex: 1, sortable: true },
@@ -35,6 +84,14 @@ function ViewVehicles() {
       sortable: true,
     },
     { field: "status", headerName: "Status", flex: 1, sortable: true },
+    {
+      headerName: "Actions",
+      field: "actions",
+      cellRenderer: ActionCellRenderer,
+      filter: false,
+      sortable: false,
+      width: 150,
+    },
   ]);
 
   const defaultColDef = useMemo(() => {

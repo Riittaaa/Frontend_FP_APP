@@ -32,3 +32,32 @@ export const CREATE_VEHICLE = gql`
     }
   }
 `;
+
+export const UPDATE_VEHICLE = gql`
+  mutation UpdateVehicle($updateVehicle: UpdateVehicleInput!) {
+    updateVehicle(input: $updateVehicle) {
+      vehicle {
+        licensePlate
+        brand
+        vehicleType
+        status
+        capacity
+        groupId
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const DELETE_VEHICLE = gql`
+  mutation deleteVehicle($deleteVehicleInput: DeleteVehicleInput!) {
+    deleteVehicle(input: $deleteVehicleInput) {
+      vehicle {
+        id
+      }
+      message
+      errors
+    }
+  }
+`;
