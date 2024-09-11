@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Vehicles.css";
 import { useQuery, useMutation } from "@apollo/client";
-import { FETCH_VEHICLE } from "../../graphql/queries";
+import { FETCH_VEHICLE, FETCH_STATUSES } from "../../graphql/queries";
 import { UPDATE_VEHICLE } from "../../graphql/mutations";
 
 function EditVehicle() {
@@ -17,6 +17,12 @@ function EditVehicle() {
   const { loading, error, data } = useQuery(FETCH_VEHICLE, {
     variables: { vehicleId: vehicleId },
   });
+  const {
+    data: statusData,
+    loading: statusLoading,
+    error: statusError,
+  } = useQuery(FETCH_STATUSES);
+
   useEffect(() => {
     if (
       data &&
@@ -134,10 +140,22 @@ function EditVehicle() {
               required
             >
               <option value="">Select Status</option>
-              <option value="AVAILABLE">AVAILABLE</option>
-              <option value="IN_USE">IN_USE</option>
-              <option value="MAINTENANCE">MAINTENANCE</option>
+              {statusLoading ? (
+                <option>Loading...</option>
+              ) : statusError ? (
+                <option>Error loading statuses</option>
+              ) : (
+                statusData.statusEnumValues.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))
+              )}
             </select>
+            {statusLoading && <p>Loading statuses...</p>}
+            {statusError && (
+              <p>Error loading statuses: {statusError.message}</p>
+            )}
           </div>
 
           <button type="submit" className="submit-button">

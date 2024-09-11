@@ -31,6 +31,12 @@ export const FETCH_VEHICLES = gql`
   }
 `;
 
+export const FETCH_STATUSES = gql`
+  query statusEnum {
+    statusEnumValues
+  }
+`;
+
 export const FETCH_VEHICLE = gql`
   query specificVehicle($vehicleId: ID!) {
     specificVehicle(vehicleId: $vehicleId) {
