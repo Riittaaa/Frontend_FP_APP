@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { FETCH_GOODS } from "../../graphql/queries";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -6,17 +6,67 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import React, { useEffect, useMemo, useState } from "react";
 import "./Goods.css";
 import { useNavigate } from "react-router-dom";
+import { DELETE_GOODS } from "../../graphql/mutations";
 
 function ViewGoods() {
   const navigate = useNavigate();
   const [rowData, setRowData] = useState([]);
   const { data, loading, error } = useQuery(FETCH_GOODS);
+  const [deleteGoods] = useMutation(DELETE_GOODS);
 
   useEffect(() => {
     if (data && data.goods && data.goods.goods) {
       setRowData(data.goods.goods);
     }
   }, [data]);
+
+  const handleEdit = (goodsId) => {
+    navigate(`/editGoods/${goodsId}`);
+  };
+
+  const handleDelete = async (goodsId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        const response = await deleteGoods({
+          variables: {
+            id: {
+              goodsId: parseInt(goodsId),
+            },
+          },
+        });
+
+        if (response && response.data.deleteGoods.message) {
+          setRowData((prevData) =>
+            prevData.filter((goods) => goods.id !== goodsId)
+          );
+          console.log(response.data.deleteGoods.message);
+        } else {
+          console.log("Error", response.data.deleteGoods.errors);
+        }
+      } catch (err) {
+        console.error("Error deleting goods:", err);
+      }
+    }
+  };
+
+  const ActionCellRenderer = (params) => {
+    return (
+      <div className="goods__actions">
+        <button
+          className="goods__action-button goods__action-button--edit"
+          onClick={() => handleEdit(params.data.id)}
+        >
+          Edit
+        </button>
+        <button
+          className="goods__action-button goods__action-button--delete"
+          onClick={() => handleDelete(params.data.id)}
+        >
+          Delete
+        </button>
+      </div>
+    );
+  };
 
   const [colDefs, setColDefs] = useState([
     { field: "id", headerName: "ID", sortable: true, sort: "asc" },
@@ -25,6 +75,14 @@ function ViewGoods() {
     { field: "unit", headerName: "Unit", flex: 1, sortable: true },
     { field: "category", headerName: "Category", flex: 1, sortable: true },
     { field: "availability", headerName: "Available", flex: 1, sortable: true },
+    {
+      headerName: "Actions",
+      field: "actions",
+      cellRenderer: ActionCellRenderer,
+      filter: false,
+      sortable: false,
+      width: 150,
+    },
   ]);
 
   const defaultColDef = useMemo(() => {
@@ -44,8 +102,8 @@ function ViewGoods() {
 
   return (
     <div className="goods">
-      <div className="goods__heading">
-        <h2 className="goods__heading-title">Goods</h2>
+      <div className="goods__header">
+        <h2 className="goods__title">Goods</h2>
         <button className="goods__add-button" onClick={handleAddGoods}>
           + Add Goods
         </button>
