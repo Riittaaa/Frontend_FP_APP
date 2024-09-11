@@ -103,7 +103,7 @@ function ViewVehicles() {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading products: {error.message}</p>;
+  if (error) return <p>Error loading vehicles: {error.message}</p>;
 
   return (
     <div className="ag-vehicles">
