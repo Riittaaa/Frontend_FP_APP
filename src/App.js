@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import AddVehicle from "./components/vehicles/AddVehicle";
 import ViewVehicles from "./components/vehicles/ViewVehicles";
 import EditVehicle from "./components/vehicles/EditVehicle";
+import ViewGoods from "./components/goods/ViewGoods";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
               <Route path="/addVehicle" element={<AddVehicle />} />
               <Route path="/vehicles" element={<ViewVehicles />} />
               <Route path="/editVehicle/:vehicleId" element={<EditVehicle />} />
+
+              <Route path="/goods" element={<ViewGoods />} />
             </Routes>
           </Router>
         </Provider>
