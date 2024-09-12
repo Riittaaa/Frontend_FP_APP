@@ -17,6 +17,7 @@ import ViewGoods from "./components/goods/ViewGoods";
 import AddGoods from "./components/goods/AddGoods";
 import EditGoods from "./components/goods/EditGoods";
 import ViewCustomers from "./components/customers/ViewCustomers";
+import AddCustomer from "./components/customers/AddCustomer";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               <Route path="/editGoods/:goodsId" element={<EditGoods />} />
 
               <Route path="/customers" element={<ViewCustomers />} />
+              <Route path="/addCustomer" element={<AddCustomer />} />
             </Routes>
           </Router>
         </Provider>
