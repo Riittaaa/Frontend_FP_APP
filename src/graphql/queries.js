@@ -86,3 +86,29 @@ export const FETCH_SPECIFIC_GOODS = gql`
     }
   }
 `;
+
+export const FETCH_CUSTOMERS = gql`
+  query Customers {
+    allCustomers {
+      id
+      name
+      email
+      address
+      phone
+      groupId
+    }
+  }
+`;
+
+export const FETCH_CUSTOMER = gql`
+  query fetchCustomer($customerId: ID!) {
+    customer(customerId: $customerId) {
+      id
+      name
+      email
+      address
+      phone
+      groupId
+    }
+  }
+`;
