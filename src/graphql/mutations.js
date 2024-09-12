@@ -106,3 +106,19 @@ export const DELETE_GOODS = gql`
     }
   }
 `;
+
+export const CREATE_CUSTOMER = gql`
+  mutation createCustomer($createCustomerInput: CreateCustomerInput!) {
+    createCustomer(input: $createCustomerInput) {
+      customer {
+        name
+        email
+        address
+        phone
+        groupId
+      }
+      message
+      error
+    }
+  }
+`;
