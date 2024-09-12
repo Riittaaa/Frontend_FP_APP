@@ -40,8 +40,8 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/products" onClick={closeMenu}>
-            <i className="fas fa-box-open"></i> Products
+          <Link to="/goods" onClick={closeMenu}>
+            <i className="fas fa-box-open"></i> Goods
           </Link>
         </li>
         <li>

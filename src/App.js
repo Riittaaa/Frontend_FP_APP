@@ -13,6 +13,9 @@ import { Provider } from "react-redux";
 import AddVehicle from "./components/vehicles/AddVehicle";
 import ViewVehicles from "./components/vehicles/ViewVehicles";
 import EditVehicle from "./components/vehicles/EditVehicle";
+import ViewGoods from "./components/goods/ViewGoods";
+import AddGoods from "./components/goods/AddGoods";
+import EditGoods from "./components/goods/EditGoods";
 
 function App() {
   return (
@@ -27,6 +30,10 @@ function App() {
               <Route path="/addVehicle" element={<AddVehicle />} />
               <Route path="/vehicles" element={<ViewVehicles />} />
               <Route path="/editVehicle/:vehicleId" element={<EditVehicle />} />
+
+              <Route path="/goods" element={<ViewGoods />} />
+              <Route path="/addGoods" element={<AddGoods />} />
+              <Route path="/editGoods/:goodsId" element={<EditGoods />} />
             </Routes>
           </Router>
         </Provider>
