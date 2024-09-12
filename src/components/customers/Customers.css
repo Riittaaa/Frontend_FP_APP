@@ -111,3 +111,29 @@
   justify-content: center;
   color: #f39c12;
 }
+
+.customers__actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.customers__action-button {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.customers__action-button:hover {
+  opacity: 0.8;
+}
+
+.customers__action-button--edit {
+  background-color: #4caf50;
+}
+
+.customers__action-button--delete {
+  background-color: #f44336;
+}

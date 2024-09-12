@@ -122,3 +122,16 @@ export const CREATE_CUSTOMER = gql`
     }
   }
 `;
+
+export const DELETE_CUSTOMER = gql`
+  mutation deleteCustomer($deleteCustomer: DeleteCustomerInput!) {
+    deleteCustomer(input: $deleteCustomer) {
+      customer {
+        id
+        name
+      }
+      message
+      error
+    }
+  }
+`;
