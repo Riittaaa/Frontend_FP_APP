@@ -16,6 +16,7 @@ import EditVehicle from "./components/vehicles/EditVehicle";
 import ViewGoods from "./components/goods/ViewGoods";
 import AddGoods from "./components/goods/AddGoods";
 import EditGoods from "./components/goods/EditGoods";
+import ViewCustomers from "./components/customers/ViewCustomers";
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
               <Route path="/goods" element={<ViewGoods />} />
               <Route path="/addGoods" element={<AddGoods />} />
               <Route path="/editGoods/:goodsId" element={<EditGoods />} />
+
+              <Route path="/customers" element={<ViewCustomers />} />
             </Routes>
           </Router>
         </Provider>
