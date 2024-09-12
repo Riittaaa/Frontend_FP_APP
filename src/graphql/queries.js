@@ -99,3 +99,16 @@ export const FETCH_CUSTOMERS = gql`
     }
   }
 `;
+
+export const FETCH_CUSTOMER = gql`
+  query fetchCustomer($customerId: ID!) {
+    customer(customerId: $customerId) {
+      id
+      name
+      email
+      address
+      phone
+      groupId
+    }
+  }
+`;

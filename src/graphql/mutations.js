@@ -123,6 +123,22 @@ export const CREATE_CUSTOMER = gql`
   }
 `;
 
+export const UPDATE_CUSTOMER = gql`
+  mutation updateCustomer($updateCustomer: UpdateCustomerInput!) {
+    updateCustomer(input: $updateCustomer) {
+      customer {
+        name
+        email
+        address
+        phone
+        groupId
+      }
+      message
+      error
+    }
+  }
+`;
+
 export const DELETE_CUSTOMER = gql`
   mutation deleteCustomer($deleteCustomer: DeleteCustomerInput!) {
     deleteCustomer(input: $deleteCustomer) {
