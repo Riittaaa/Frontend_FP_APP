@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Vehicles.css";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_VEHICLE } from "../../graphql/mutations";
+import { FETCH_STATUSES } from "../../graphql/queries";
 
 function AddVehicle() {
   const [licensePlate, setLicensePlate] = useState("");
@@ -10,6 +11,11 @@ function AddVehicle() {
   const [capacity, setCapacity] = useState("");
   const [status, setStatus] = useState("");
 
+  const {
+    data: statusData,
+    loading: statusLoading,
+    error: statusError,
+  } = useQuery(FETCH_STATUSES);
   const [createVehicle, { loading, error }] = useMutation(CREATE_VEHICLE);
 
   const handleSubmit = async (e) => {
@@ -107,10 +113,22 @@ function AddVehicle() {
               required
             >
               <option value="">Select Status</option>
-              <option value="AVAILABLE">AVAILABLE</option>
-              <option value="IN_USE">IN_USE</option>
-              <option value="MAINTENANCE">MAINTENANCE</option>
+              {statusLoading ? (
+                <option>Loading...</option>
+              ) : statusError ? (
+                <option>Error loading statuses</option>
+              ) : (
+                statusData.statusEnumValues.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))
+              )}
             </select>
+            {statusLoading && <p>Loading statuses...</p>}
+            {statusError && (
+              <p>Error loading statuses: {statusError.message}</p>
+            )}
           </div>
 
           <button type="submit" className="submit-button">
