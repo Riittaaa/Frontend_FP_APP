@@ -90,6 +90,7 @@ export const FETCH_SPECIFIC_GOODS = gql`
 export const FETCH_CUSTOMERS = gql`
   query Customers {
     allCustomers {
+      id
       name
       email
       address
