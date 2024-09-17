@@ -37,10 +37,13 @@ function EditCustomer() {
         variables: {
           updateCustomer: {
             customerId,
-            name,
-            email,
-            address,
-            phone,
+            customerInput: {
+              name,
+              email,
+              address,
+              phone: parseInt(phone),
+              groupId: 1,
+            },
           },
         },
       });

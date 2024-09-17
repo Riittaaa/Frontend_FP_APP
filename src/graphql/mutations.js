@@ -134,7 +134,7 @@ export const UPDATE_CUSTOMER = gql`
         groupId
       }
       message
-      error
+      errors
     }
   }
 `;
