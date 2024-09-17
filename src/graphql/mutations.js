@@ -147,7 +147,7 @@ export const DELETE_CUSTOMER = gql`
         name
       }
       message
-      error
+      errors
     }
   }
 `;
