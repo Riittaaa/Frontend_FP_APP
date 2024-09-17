@@ -153,3 +153,7 @@
 .customers__action-button--delete {
   background-color: #f44336;
 }
+
+.ag-row {
+  cursor: pointer;
+}
