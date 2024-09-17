@@ -191,3 +191,48 @@ export const DELETE_BRANCH = gql`
     }
   }
 `;
+
+export const CREATE_DRIVER = gql`
+  mutation createDriver($input: CreateDriverInput!) {
+    addDriver(input: $input) {
+      driver {
+        id
+        name
+        email
+        address
+        groupId
+        phoneNo
+        status
+        userId
+      }
+      error
+      message
+    }
+  }
+`;
+
+export const UPDATE_DRIVER = gql`
+  mutation updateDriver($input: UpdateDriverInput!) {
+    updateDriver(input: $input) {
+      driver {
+        id
+        name
+        email
+        address
+        phoneNo
+        status
+        userId
+        groupId
+      }
+    }
+  }
+`;
+
+export const DELETE_DRIVER = gql`
+  mutation deleteDriver($input: DeleteDriverInput!) {
+    deleteDriver(input: $input) {
+      error
+      message
+    }
+  }
+`;

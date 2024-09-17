@@ -1,0 +1,158 @@
+.drivers {
+  height: calc(100vh - 50px);
+  margin: 20px;
+}
+
+.drivers__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.drivers__title {
+  margin: 0;
+}
+
+.drivers__add-button {
+  background-color: #f39c12;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.drivers__add-button:hover {
+  background-color: #e67e22;
+}
+
+.drivers__table {
+  height: calc(100vh - 100px);
+  width: 100%;
+}
+
+.add-driver,
+.edit-driver {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-driver__container,
+.edit-driver__container {
+  width: 100%;
+  align-items: center;
+  max-width: 400px;
+  margin: 20px 10px;
+  /* justify-content: space-around; */
+  padding: 20px;
+  background-color: #212121;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.add-driver__heading,
+.edit-driver__heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-driver__heading h3 {
+  margin: 0;
+}
+
+.add-driver__form,
+.edit-driver__form {
+  width: 100%;
+}
+
+.add-driver__form-group,
+.edit-driver__form-group {
+  margin-bottom: 15px;
+}
+
+.add-driver__label,
+.edit-driver__label {
+  display: block;
+  margin-bottom: 5px;
+  color: #bdbdbd;
+}
+
+.add-driver__input,
+.add-driver__select,
+.edit-driver__input,
+.edit-driver__select {
+  width: 100%;
+  padding: 8px;
+  background-color: #2c2c2c;
+  border: 1px solid #444444;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.add-driver__input:focus,
+.add-driver__select:focus,
+.edit-driver__input:focus,
+.edit-driver__select:focus {
+  outline: none;
+  border-color: #1e88e5;
+}
+
+.add-driver__submit-button,
+.edit-driver__submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #f39c12;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-driver__submit-button:hover,
+.edit-driver__submit-button:hover {
+  background-color: #e67e22;
+}
+
+.add-driver__link,
+.edit-driver__link {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+  color: #f39c12;
+  text-decoration: none;
+}
+
+.add-driver__link:hover,
+.edit-driver__link:hover {
+  text-decoration: underline;
+}
+
+.driver__actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.driver__action-button {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.driver__action-button:hover {
+  opacity: 0.8;
+}
+
+.driver__action-button--edit {
+  background-color: #4caf50;
+}
+
+.driver__action-button--delete {
+  background-color: #f44336;
+}
