@@ -123,6 +123,11 @@ function ViewCustomers() {
   const handleAddCustomer = () => {
     navigate("/addCustomer");
   };
+
+  const handleRowClick = (params) => {
+    const customerId = params.data.id;
+    navigate(`/customers/${customerId}/branches`);
+  };
   return (
     <div className="customers">
       <div className="customers__header">
@@ -139,6 +144,7 @@ function ViewCustomers() {
           defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={10}
+          onRowClicked={handleRowClick}
         />
       </div>
     </div>
