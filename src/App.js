@@ -19,6 +19,9 @@ import EditGoods from "./components/goods/EditGoods";
 import ViewCustomers from "./components/customers/ViewCustomers";
 import AddCustomer from "./components/customers/AddCustomer";
 import EditCustomer from "./components/customers/EditCustomer";
+import ViewBranches from "./components/customer_branches/ViewBranches";
+import AddBranch from "./components/customer_branches/AddBranch";
+import EditBranch from "./components/customer_branches/EditBranch";
 
 function App() {
   return (
@@ -40,8 +43,23 @@ function App() {
 
               <Route path="/customers" element={<ViewCustomers />} />
               <Route path="/addCustomer" element={<AddCustomer />} />
-              <Route path="/editCustomer/:customerId" element={<EditCustomer />} />
+              <Route
+                path="/editCustomer/:customerId"
+                element={<EditCustomer />}
+              />
 
+              <Route
+                path="/customers/:customerId/branches"
+                element={<ViewBranches />}
+              />
+              <Route
+                path="/customers/:customerId/addBranch"
+                element={<AddBranch />}
+              />
+              <Route
+                path="/customers/:customerId/branches/:customerbranchId/editBranch"
+                element={<EditBranch />}
+              />
             </Routes>
           </Router>
         </Provider>
