@@ -55,8 +55,8 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/categories" onClick={closeMenu}>
-            <i className="fas fa-tags"></i> Categories
+          <Link to="/drivers" onClick={closeMenu}>
+            <i className="fas fa-tags"></i> Drivers
           </Link>
         </li>
         <li className="navbar__login-item">
