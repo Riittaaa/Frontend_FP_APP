@@ -19,11 +19,13 @@ function AddGoods() {
       const { data } = await createGoods({
         variables: {
           goodsInput: {
-            name,
-            category,
-            soldAs,
-            unit,
-            availability,
+            goodsInput: {
+              name,
+              category,
+              soldAs,
+              unit,
+              availability,
+            },
           },
         },
       });
