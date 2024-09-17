@@ -22,6 +22,9 @@ import EditCustomer from "./components/customers/EditCustomer";
 import ViewBranches from "./components/customer_branches/ViewBranches";
 import AddBranch from "./components/customer_branches/AddBranch";
 import EditBranch from "./components/customer_branches/EditBranch";
+import ViewDrivers from "./components/drivers/ViewDrivers";
+import AddDriver from "./components/drivers/AddDriver";
+import EditDriver from "./components/drivers/EditDriver";
 
 function App() {
   return (
@@ -60,6 +63,10 @@ function App() {
                 path="/customers/:customerId/branches/:customerbranchId/editBranch"
                 element={<EditBranch />}
               />
+
+              <Route path="/drivers" element={<ViewDrivers />} />
+              <Route path="/addDriver" element={<AddDriver />} />
+              <Route path="/editDriver/:driverId" element={<EditDriver />} />
             </Routes>
           </Router>
         </Provider>
