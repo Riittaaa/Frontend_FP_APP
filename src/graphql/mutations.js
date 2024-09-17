@@ -118,7 +118,7 @@ export const CREATE_CUSTOMER = gql`
         groupId
       }
       message
-      error
+      errors
     }
   }
 `;
