@@ -21,11 +21,13 @@ function AddCustomer() {
       const { data } = await createCustomer({
         variables: {
           createCustomerInput: {
-            name,
-            email,
-            address,
-            phone: parseInt(phone),
-            groupId: 1,
+            customerInput: {
+              name,
+              email,
+              address,
+              phone: parseInt(phone),
+              groupId: 1,
+            },
           },
         },
       });
