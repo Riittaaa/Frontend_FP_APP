@@ -112,3 +112,22 @@ export const FETCH_CUSTOMER = gql`
     }
   }
 `;
+
+export const FETCH_BRANCHES = gql`
+  query allBranches($customerId: ID!) {
+    allBranches(customerId: $customerId) {
+      id
+      branchLocation
+    }
+  }
+`;
+
+export const FETCH_BRANCH = gql`
+  query customerBranch($id: ID!) {
+    customerBranch(id: $id) {
+      id
+      branchLocation
+      customerId
+    }
+  }
+`;

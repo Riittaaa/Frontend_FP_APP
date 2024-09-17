@@ -1,50 +1,56 @@
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FETCH_CUSTOMERS } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
-import "./Customers.css";
-import { DELETE_CUSTOMER } from "../../graphql/mutations";
+import React, { useEffect, useMemo, useState } from "react";
+import { FETCH_BRANCHES } from "../../graphql/queries";
+import { useNavigate, useParams } from "react-router-dom";
+import { DELETE_BRANCH } from "../../graphql/mutations";
 
-function ViewCustomers() {
+function ViewBranches() {
+  const { customerId } = useParams();
+  //   console.log(customerId);
   const navigate = useNavigate();
   const [rowData, setRowData] = useState([]);
-  const { data, loading, error } = useQuery(FETCH_CUSTOMERS);
-  const [deleteCustomer] = useMutation(DELETE_CUSTOMER);
+  const { data, loading, error } = useQuery(FETCH_BRANCHES, {
+    variables: {
+      customerId: parseInt(customerId),
+    },
+  });
+
+  const [deleteBranch] = useMutation(DELETE_BRANCH);
 
   useEffect(() => {
-    if (data && data.allCustomers) {
-      setRowData(data.allCustomers);
+    if (data && data.allBranches) {
+      setRowData(data.allBranches);
     }
   }, [data]);
 
-  const handleEdit = (customerId) => {
-    navigate(`/editCustomer/${customerId}`);
+  const handleEdit = (customerbranchId) => {
+    navigate(`${customerbranchId}/editBranch`);
   };
 
-  const handleDelete = async (customerId) => {
-    if (window.confirm("Are you sure you want to delete this customer?")) {
+  const handleDelete = async (customerbranchId) => {
+    if (window.confirm("Are you sure you want to delete this branch?")) {
       try {
-        const response = await deleteCustomer({
+        const response = await deleteBranch({
           variables: {
-            deleteCustomer: {
-              customerId: parseInt(customerId),
+            input: {
+              customerbranchId,
             },
           },
         });
 
-        if (response && response.data.deleteCustomer.message) {
+        if (response && response.data.deleteCustomerbranch.message) {
           setRowData((prevData) =>
             prevData.filter((customer) => customer.id !== customerId)
           );
-          console.log(response.data.deleteCustomer.message);
+          console.log(response.data.deleteCustomerbranch.message);
         } else {
-          console.log("Error", response.data.deleteCustomer.errors);
+          console.log("Error", response.data.deleteCustomerbranch.errors);
         }
       } catch (err) {
-        console.error("Error deleting customer:", err);
+        console.error("Error deleting branch:", err);
       }
     }
   };
@@ -72,29 +78,8 @@ function ViewCustomers() {
   const [colDefs, setColDefs] = useState([
     { field: "id", headerName: "ID", hide: true, sortable: true, sort: "asc" },
     {
-      field: "name",
-      headerName: "Customer Name",
-      flex: 1,
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      field: "phone",
-      headerName: "Phone",
+      field: "branchLocation",
+      headerName: "Branch Location",
       flex: 1,
       sortable: true,
       minWidth: 150,
@@ -120,20 +105,16 @@ function ViewCustomers() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading customers: {error.message}</p>;
 
-  const handleAddCustomer = () => {
-    navigate("/addCustomer");
+  const handleAddBranch = () => {
+    navigate(`/customers/${customerId}/addBranch`);
   };
 
-  const handleRowClick = (params) => {
-    const customerId = params.data.id;
-    navigate(`/customers/${customerId}/branches`);
-  };
   return (
     <div className="customers">
       <div className="customers__header">
-        <h2>Customers</h2>
-        <button className="customers__add-button" onClick={handleAddCustomer}>
-          + Add Customer
+        <h2>Customer Branches</h2>
+        <button className="customers__add-button" onClick={handleAddBranch}>
+          + Add Branch
         </button>
       </div>
 
@@ -144,11 +125,10 @@ function ViewCustomers() {
           defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={10}
-          onRowClicked={handleRowClick}
         />
       </div>
     </div>
   );
 }
 
-export default ViewCustomers;
+export default ViewBranches;

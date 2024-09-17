@@ -151,3 +151,43 @@ export const DELETE_CUSTOMER = gql`
     }
   }
 `;
+
+export const CREATE_BRANCH = gql`
+  mutation addCustomerbranch($customerBranch: AddCustomerBranchInput!) {
+    addCustomerbranch(input: $customerBranch) {
+      customerBranch {
+        branchLocation
+        customerId
+      }
+      message
+      error
+    }
+  }
+`;
+
+export const UPDATE_BRANCH = gql`
+  mutation updateCustomerbranch($input: UpdateCustomerBranchInput!) {
+    updateCustomerbranch(input: $input) {
+      customerBranch {
+        id
+        branchLocation
+      }
+      message
+      success
+      error
+    }
+  }
+`;
+
+export const DELETE_BRANCH = gql`
+  mutation deleteCustomerbranch($input: DeleteCustomerBranchInput!) {
+    deleteCustomerbranch(input: $input) {
+      customerBranch {
+        id
+        branchLocation
+      }
+      message
+      error
+    }
+  }
+`;
