@@ -25,6 +25,7 @@ import EditBranch from "./components/customer_branches/EditBranch";
 import ViewDrivers from "./components/drivers/ViewDrivers";
 import AddDriver from "./components/drivers/AddDriver";
 import EditDriver from "./components/drivers/EditDriver";
+import AddOrder from "./components/orders/AddOrder";
 
 function App() {
   return (
@@ -67,6 +68,8 @@ function App() {
               <Route path="/drivers" element={<ViewDrivers />} />
               <Route path="/addDriver" element={<AddDriver />} />
               <Route path="/editDriver/:driverId" element={<EditDriver />} />
+
+              <Route path="/orderlists" element={<AddOrder />} />
             </Routes>
           </Router>
         </Provider>
