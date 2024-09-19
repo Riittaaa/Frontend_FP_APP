@@ -15,6 +15,7 @@ function Login() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [groupSelectionError, setGroupSelectionError] = useState("");
   const dispatch = useDispatch();
 
   const {
@@ -22,6 +23,7 @@ function Login() {
     loading: groupLoading,
     error: groupError,
   } = useQuery(FETCH_GROUP);
+
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
   const togglePasswordVisibility = () => {
@@ -32,6 +34,7 @@ function Login() {
     let isValid = true;
     setEmailError("");
     setPasswordError("");
+    setGroupSelectionError("");
 
     if (!email) {
       setEmailError("Email is required");
@@ -49,19 +52,26 @@ function Login() {
       isValid = false;
     }
 
+    if (!group) {
+      setGroupSelectionError("Group is required");
+      isValid = false;
+    }
+
     return isValid;
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const isValid = validateInput(email, password);
+    const isValid = validateInput(email, password, group);
     if (isValid) {
       try {
         const { data } = await loginUser({
           variables: {
-            email,
-            password,
-            groupId: group,
+            login: {
+              email,
+              password,
+              groupId: parseInt(group),
+            },
           },
         });
 
@@ -73,7 +83,7 @@ function Login() {
             })
           );
           localStorage.setItem("token", data.loginUser.token);
-          console.log("Login Successful");
+          console.log(data.loginUser.message);
         } else {
           dispatch(loginFailure(data.loginUser.error));
           console.error("Login failed:", data.loginUser.error);
@@ -138,7 +148,7 @@ function Login() {
             </label>
             <select
               className="login__input"
-              id="grooup"
+              id="group"
               value={group}
               onChange={(e) => setGroup(e.target.value)}
             >
@@ -152,15 +162,18 @@ function Login() {
                 ))}
             </select>
             {groupError && <p className="login__error">{groupError.message}</p>}
+            {groupSelectionError && (
+              <p className="login__error">{groupSelectionError}</p>
+            )}
           </div>
 
           <button type="submit" className="login__button" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
 
-          {/* <p className="login__signup-prompt">
-            Don't have an account? <a href="/signup">Signup</a>
-          </p> */}
+          {error && (
+            <p className="login__error">Error logging in: {error.message}</p>
+          )}
         </form>
       </div>
     </div>
