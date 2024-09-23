@@ -33,7 +33,6 @@ function AddDriver() {
               address,
               phoneNo: parseInt(phoneNo),
               status,
-              groupId: 1,
             },
           },
         },
