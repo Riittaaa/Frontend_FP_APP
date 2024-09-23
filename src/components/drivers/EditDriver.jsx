@@ -52,25 +52,7 @@ function EditDriver() {
               address,
               phoneNo: parseInt(phoneNo),
               status,
-              groupId: 1,
             },
-            // "driverId": 39,
-            // "driverInput": {
-            //    "name": "Update Driver",
-            //   "address": "update",
-            //   "phoneNo": 232311112,
-            //   "status": "DEPLOYED",
-            //   "email": "updat@ail.com",
-            //   "groupId": 1
-            // }
-            // input: {
-            //   name,
-            //   email,
-            //   address,
-            //   phoneNo: parseInt(phoneNo),
-            //   status,
-            //   driverId,
-            // },
           },
         },
       });

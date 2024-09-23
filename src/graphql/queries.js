@@ -133,8 +133,8 @@ export const FETCH_BRANCH = gql`
 `;
 
 export const FETCH_DRIVERS = gql`
-  query alldrivers($groupId: ID!) {
-    alldrivers(groupId: $groupId) {
+  query alldrivers {
+    alldrivers {
       id
       name
       address
@@ -161,7 +161,6 @@ export const FETCH_DRIVER = gql`
       address
       phoneNo
       status
-      userId
       groupId
     }
   }
