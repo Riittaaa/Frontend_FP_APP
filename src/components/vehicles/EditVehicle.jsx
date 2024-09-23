@@ -54,7 +54,6 @@ function EditVehicle() {
               vehicleType,
               status,
               capacity: parseInt(capacity),
-              groupId: 1,
             },
           },
         },
@@ -162,6 +161,9 @@ function EditVehicle() {
             {updating ? "Updating..." : " Update Vehicle"}
           </button>
 
+          <a href="/vehicles" className="edit-vehicle__link">
+            Back to Vehicles
+          </a>
           {updateError && <p>Error updating vehicle:{updateError.message}</p>}
         </form>
       </div>

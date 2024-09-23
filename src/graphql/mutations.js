@@ -23,7 +23,6 @@ export const CREATE_VEHICLE = gql`
         vehicleType
         status
         capacity
-        groupId
       }
       errors
       message
@@ -40,7 +39,6 @@ export const UPDATE_VEHICLE = gql`
         vehicleType
         status
         capacity
-        groupId
       }
       errors
       message

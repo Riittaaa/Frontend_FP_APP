@@ -128,3 +128,17 @@
 .delete-button:hover {
   opacity: 0.8;
 }
+
+.add-vehicle__link,
+.edit-vehicle__link {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+  color: #f39c12;
+  text-decoration: none;
+}
+
+.add-vehicle__link:hover,
+.edit-vehicle__link:hover {
+  text-decoration: underline;
+}
