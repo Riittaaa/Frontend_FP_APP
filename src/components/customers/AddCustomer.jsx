@@ -45,13 +45,13 @@ function AddCustomer() {
   return (
     <div className="add-customer">
       <div className="add-customer__container">
-        <div className="add-goods__heading">
+        <div className="add-customer__heading">
           <h3>Add New Customer</h3>
         </div>
 
-        <form className="add-goods__form" onSubmit={handleSubmit}>
-          <div className="add-goods__form-group">
-            <label htmlFor="name" className="add-goods__label">
+        <form className="add-customer__form" onSubmit={handleSubmit}>
+          <div className="add-customer__form-group">
+            <label htmlFor="name" className="add-customer__label">
               Customer Name
             </label>
             <input
@@ -60,13 +60,13 @@ function AddCustomer() {
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="add-goods__input"
+              className="add-customer__input"
               required
             />
           </div>
 
-          <div className="add-goods__form-group">
-            <label htmlFor="email" className="add-goods__label">
+          <div className="add-customer__form-group">
+            <label htmlFor="email" className="add-customer__label">
               Email
             </label>
             <input
@@ -75,13 +75,13 @@ function AddCustomer() {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="add-goods__input"
+              className="add-customer__input"
               required
             />
           </div>
 
-          <div className="add-goods__form-group">
-            <label htmlFor="address" className="add-goods__label">
+          <div className="add-customer__form-group">
+            <label htmlFor="address" className="add-customer__label">
               Address
             </label>
             <input
@@ -90,13 +90,13 @@ function AddCustomer() {
               name="address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="add-goods__input"
+              className="add-customer__input"
               required
             />
           </div>
 
-          <div className="add-goods__form-group">
-            <label htmlFor="address" className="add-goods__label">
+          <div className="add-customer__form-group">
+            <label htmlFor="address" className="add-customer__label">
               Phone
             </label>
             <input
@@ -105,21 +105,21 @@ function AddCustomer() {
               name="phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="add-goods__input"
+              className="add-customer__input"
               required
             />
           </div>
 
-          <button type="submit" className="add-goods__submit-button">
+          <button type="submit" className="add-customer__submit-button">
             {loading ? "Adding..." : "Add Customer"}
           </button>
 
-          <a href="/customers" className="add-goods__link">
+          <a href="/customers" className="add-customer__link">
             Back to Customers
           </a>
 
           {error && (
-            <p className="add-goods__error">
+            <p className="add-customer__error">
               Error adding product: {error.message}
             </p>
           )}
