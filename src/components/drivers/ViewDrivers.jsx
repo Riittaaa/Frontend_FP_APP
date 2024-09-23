@@ -11,7 +11,11 @@ import { DELETE_DRIVER } from "../../graphql/mutations";
 function ViewDrivers() {
   const navigate = useNavigate();
   const [rowData, setRowData] = useState([]);
-  const { data, loading, error } = useQuery(FETCH_DRIVERS);
+  const { data, loading, error } = useQuery(FETCH_DRIVERS, {
+    variables: {
+      groupId: 1,
+    },
+  });
   const [deleteDriver] = useMutation(DELETE_DRIVER);
 
   useEffect(() => {

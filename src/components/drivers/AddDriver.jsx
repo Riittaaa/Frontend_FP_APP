@@ -27,13 +27,14 @@ function AddDriver() {
       const { data } = await createDriver({
         variables: {
           input: {
-            name,
-            email,
-            address,
-            phoneNo: parseInt(phoneNo),
-            status,
-            groupId: 1,
-            userId: 1,
+            driverInput: {
+              name,
+              email,
+              address,
+              phoneNo: parseInt(phoneNo),
+              status,
+              groupId: 1,
+            },
           },
         },
       });
