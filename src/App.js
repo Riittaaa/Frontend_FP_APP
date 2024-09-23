@@ -26,6 +26,7 @@ import ViewDrivers from "./components/drivers/ViewDrivers";
 import AddDriver from "./components/drivers/AddDriver";
 import EditDriver from "./components/drivers/EditDriver";
 import AddOrder from "./components/orders/AddOrder";
+import OrderLists from "./components/orders/OrderLists";
 
 function App() {
   return (
@@ -69,7 +70,8 @@ function App() {
               <Route path="/addDriver" element={<AddDriver />} />
               <Route path="/editDriver/:driverId" element={<EditDriver />} />
 
-              <Route path="/orderlists" element={<AddOrder />} />
+              <Route path="/orderlists" element={<OrderLists />} />
+              <Route path="/addOrder" element={<AddOrder />} />
             </Routes>
           </Router>
         </Provider>
