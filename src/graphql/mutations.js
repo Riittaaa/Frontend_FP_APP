@@ -64,7 +64,10 @@ export const CREATE_GOODS = gql`
       goods {
         id
         name
-        category
+        category {
+          id
+          name
+        }
         availability
       }
       message
@@ -79,7 +82,10 @@ export const UPDATE_GOODS = gql`
       goods {
         id
         name
-        category
+        category {
+          id
+          name
+        }
         availability
         soldAs
         unit

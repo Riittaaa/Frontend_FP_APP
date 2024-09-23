@@ -1,7 +1,8 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { CREATE_GOODS } from "../../graphql/mutations";
 import "./Goods.css";
+import { FETCH_AVAILABILITIES, FETCH_CATEGORIES } from "../../graphql/queries";
 
 function AddGoods() {
   const [name, setName] = useState("");
@@ -10,6 +11,16 @@ function AddGoods() {
   const [unit, setUnit] = useState("");
   const [availability, setAvailability] = useState("");
 
+  const {
+    data: categories,
+    loading: categoriesLoading,
+    error: categoriesError,
+  } = useQuery(FETCH_CATEGORIES);
+  const {
+    data: availabilities,
+    loading: availabilitiesLoading,
+    error: availabilitiesError,
+  } = useQuery(FETCH_AVAILABILITIES);
   const [createGoods, { loading, error }] = useMutation(CREATE_GOODS);
 
   const handleSubmit = async (e) => {
@@ -21,7 +32,7 @@ function AddGoods() {
           goodsInput: {
             goodsInput: {
               name,
-              category,
+              categoryId: category,
               soldAs,
               unit,
               availability,
@@ -76,8 +87,17 @@ function AddGoods() {
               required
             >
               <option value="">Select category</option>
-              <option value="Fuel">Fuel</option>
-              <option value="Gas">Gas</option>
+              {categoriesLoading ? (
+                <option>Loading...</option>
+              ) : categoriesError ? (
+                <option>Error loading categories</option>
+              ) : (
+                categories.allCategory.category.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 
@@ -124,9 +144,17 @@ function AddGoods() {
               required
             >
               <option value="">Select availability</option>
-              <option value="DISCONTINUED">DISCONTINUED</option>
-              <option value="OUT_OF_STOCK">OUT_OF_STOCK</option>
-              <option value="IN_STOCK">IN_STOCK</option>
+              {availabilitiesLoading ? (
+                <option>Loading...</option>
+              ) : availabilitiesError ? (
+                <option>Error loading availabilities</option>
+              ) : (
+                availabilities.availibility.map((availability) => (
+                  <option key={availability} value={availability}>
+                    {availability}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 
