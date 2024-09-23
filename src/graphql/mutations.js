@@ -234,3 +234,31 @@ export const DELETE_DRIVER = gql`
     }
   }
 `;
+
+export const CREATE_ORDERGROUP = gql`
+  mutation CreateOrderGroup($groupOrder: CreateOrderGroupInput!) {
+    createOrderGroup(input: $groupOrder) {
+      order {
+        id
+        createdAt
+        recurring
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          branchLocation
+        }
+        groupId
+        plannedAt
+      }
+      lineItems {
+        id
+        goodsId
+        quantity
+      }
+      errors
+      message
+    }
+  }
+`;

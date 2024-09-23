@@ -166,3 +166,33 @@ export const FETCH_DRIVER = gql`
     }
   }
 `;
+
+export const FETCH_ORDERGROUPS = gql`
+  query OrderGroup {
+    allOrderGroup {
+      order {
+        id
+        createdAt
+        recurring
+        customer {
+          id
+          name
+          phone
+        }
+        customerBranch {
+          branchLocation
+          customerId
+        }
+        groupId
+        plannedAt
+      }
+      lineItems {
+        id
+        goodsId
+        quantity
+      }
+      errors
+      message
+    }
+  }
+`;

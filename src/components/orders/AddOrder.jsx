@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import "./Orders.css";
-import { FETCH_BRANCHES, FETCH_CUSTOMERS } from "../../graphql/queries";
-import { useQuery } from "@apollo/client";
+import {
+  FETCH_BRANCHES,
+  FETCH_CUSTOMERS,
+  FETCH_GOODS,
+} from "../../graphql/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_ORDERGROUP } from "../../graphql/mutations";
+import { useNavigate } from "react-router-dom";
 
 function AddOrder() {
+  const navigate = useNavigate();
   const [plannedAt, setPlannedAt] = useState("");
   const [customer, setCustomer] = useState("");
   const [customerBranch, setCustomerBranch] = useState("");
   const [goodsList, setGoodsList] = useState([{ goods: "", quantity: "" }]);
+  const [recurring, setRecurring] = useState(false);
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState("");
+  const [nextDueDate, setNextDueDate] = useState("");
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState("");
 
   const {
     data: allCustomersData,
@@ -16,14 +27,24 @@ function AddOrder() {
   } = useQuery(FETCH_CUSTOMERS);
 
   const {
-    data: allCusomerBranches,
-    loading: cusomerBranchesLoading,
-    error: cusomerBranchesError,
+    data: allCustomerBranches,
+    loading: customerBranchesLoading,
+    error: customerBranchesError,
+    refetch: refetchBranches,
   } = useQuery(FETCH_BRANCHES, {
-    variables: {
-      customerId: 1,
-    },
+    variables: { customerId: customer },
+    skip: !customer,
   });
+
+  const {
+    data: allGoodsData,
+    loading: allGoodsLoading,
+    error: goodsError,
+  } = useQuery(FETCH_GOODS);
+
+  const [createOrderGroup, { loading, error }] = useMutation(CREATE_ORDERGROUP);
+
+  // console.log(allGoodsData.goods.goods.name);
 
   const handleGoodsChange = (index, event) => {
     const { name, value } = event.target;
@@ -36,12 +57,56 @@ function AddOrder() {
     setGoodsList([...goodsList, { goods: "", quantity: "" }]);
   };
 
-  const handleSubmit = (e) => {
+  const handleCustomerChange = (e) => {
+    const selectedCustomer = e.target.value;
+    setCustomer(selectedCustomer);
+    setCustomerBranch("");
+    if (selectedCustomer) {
+      refetchBranches({ customerId: selectedCustomer });
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const { data } = await createOrderGroup({
+        variables: {
+          groupOrder: {
+            createOrder: {
+              groupId: 1,
+              plannedAt,
+              customerBranchId: customerBranch,
+              recurring,
+              linedItemsAttributes: goodsList.map((item) => ({
+                goodsId: parseInt(item.goods),
+                quantity: parseInt(item.quantity),
+              })),
+            },
+          },
+        },
+      });
+
+      if (data.errors) {
+        console.log("Error");
+      } else {
+        // console.log(data.addCustomerbranch.message);
+        navigate("/orderlists");
+      }
+    } catch (err) {
+      console.error("Error adding order group:", err);
+    }
+
     console.log("Planned At:", plannedAt);
     console.log("Customer:", customer);
     console.log("Customer Branch:", customerBranch);
     console.log("Goods List:", goodsList);
+    console.log("Recurring:", recurring);
+    if (recurring) {
+      console.log("Recurrence Frequency:", recurrenceFrequency);
+      console.log("Next Due Date:", nextDueDate);
+      console.log("Recurrence End Date:", recurrenceEndDate);
+    }
   };
 
   return (
@@ -49,21 +114,22 @@ function AddOrder() {
       <div className="order-form">
         <h3 className="order-form__title">Add Order</h3>
         <form className="order-form__container" onSubmit={handleSubmit}>
-          <div className="order-form__group">
-            <label htmlFor="plannedAt" className="order-form__label">
-              Planned at
-            </label>
-            <input
-              type="date"
-              id="plannedAt"
-              name="plannedAt"
-              value={plannedAt}
-              onChange={(e) => setPlannedAt(e.target.value)}
-              className="order-form__input"
-              required
-            />
-          </div>
           <div className="order-form__row">
+            <div className="order-form__group">
+              <label htmlFor="plannedAt" className="order-form__label">
+                Planned at
+              </label>
+              <input
+                type="date"
+                id="plannedAt"
+                name="plannedAt"
+                value={plannedAt}
+                onChange={(e) => setPlannedAt(e.target.value)}
+                className="order-form__input"
+                required
+              />
+            </div>
+
             <div className="order-form__group">
               <label htmlFor="customer" className="order-form__label">
                 Select Customer
@@ -72,7 +138,7 @@ function AddOrder() {
                 id="customer"
                 name="customer"
                 value={customer}
-                onChange={(e) => setCustomer(e.target.value)}
+                onChange={handleCustomerChange}
                 className="order-form__select"
                 required
               >
@@ -85,6 +151,7 @@ function AddOrder() {
                   ))}
               </select>
             </div>
+
             <div className="order-form__group">
               <label htmlFor="customerBranch" className="order-form__label">
                 Select Customer Branch
@@ -98,30 +165,89 @@ function AddOrder() {
                 required
               >
                 <option value="">Select customer branch</option>
-                <option value="">CB1</option>
-                <option value="">CB2</option>
-                <option value="">CB3</option>
+                {!customerBranchesLoading &&
+                  allCustomerBranches?.allBranches?.map((branch) => (
+                    <option key={branch.id} value={branch.id}>
+                      {branch.branchLocation}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
-          {/* Other form groups and rows */}
 
-          <div className="form-group">
-            <label htmlFor="recurring" className="add-goods__label">
+          <div className="order-form__group">
+            <label htmlFor="recurring" className="order-form__label">
               Recurring
-              <input
-                type="checkbox"
-                id="recurring"
-                name="recurring"
-                className="recurring"
-              />
             </label>
+            <input
+              type="checkbox"
+              id="recurring"
+              name="recurring"
+              checked={recurring}
+              onChange={(e) => setRecurring(e.target.checked)}
+              className="order-form__input-checkbox"
+            />
           </div>
+
+          {/* Conditionally Render Recurrence Fields */}
+          {recurring && (
+            <>
+              <div className="order-form__row">
+                <div className="order-form__group">
+                  <label
+                    htmlFor="recurrenceFrequency"
+                    className="order-form__label"
+                  >
+                    Recurrence Frequency
+                  </label>
+                  <input
+                    type="text"
+                    id="recurrenceFrequency"
+                    name="recurrenceFrequency"
+                    value={recurrenceFrequency}
+                    onChange={(e) => setRecurrenceFrequency(e.target.value)}
+                    className="order-form__input"
+                    required
+                  />
+                </div>
+                <div className="order-form__group">
+                  <label htmlFor="nextDueDate" className="order-form__label">
+                    Next Due Date
+                  </label>
+                  <input
+                    type="date"
+                    id="nextDueDate"
+                    name="nextDueDate"
+                    value={nextDueDate}
+                    onChange={(e) => setNextDueDate(e.target.value)}
+                    className="order-form__input"
+                    required
+                  />
+                </div>
+                <div className="order-form__group">
+                  <label
+                    htmlFor="recurrenceEndDate"
+                    className="order-form__label"
+                  >
+                    Recurrence End Date
+                  </label>
+                  <input
+                    type="date"
+                    id="recurrenceEndDate"
+                    name="recurrenceEndDate"
+                    value={recurrenceEndDate}
+                    onChange={(e) => setRecurrenceEndDate(e.target.value)}
+                    className="order-form__input"
+                    required
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           {goodsList.map((goodsItem, index) => (
             <div className="order-form__row" key={index}>
               <div className="order-form__group">
-                {/* <div className="form-group"> */}
                 <label htmlFor={`goods-${index}`} className="add-goods__label">
                   Select Goods
                 </label>
@@ -130,13 +256,16 @@ function AddOrder() {
                   name="goods"
                   value={goodsItem.goods}
                   onChange={(e) => handleGoodsChange(index, e)}
-                  className="add-goods__select"
+                  className="order-form__select"
                   required
                 >
                   <option value="">Select goods</option>
-                  <option value="C1">C1</option>
-                  <option value="C2">C2</option>
-                  <option value="C3">C3</option>
+                  {!allGoodsLoading &&
+                    allGoodsData?.goods?.goods?.map((goods) => (
+                      <option key={goods.id} value={goods.id}>
+                        {goods.name}
+                      </option>
+                    ))}
                 </select>
               </div>
 
@@ -159,10 +288,11 @@ function AddOrder() {
                 <label htmlFor={`quantity-${index}`}>unit</label>
               </div>
             </div>
-            // </div>
           ))}
+
           <div className="buttons">
             <button
+              type="button"
               className="order-form__button order-form__button--add-goods"
               onClick={handleAddGoods}
             >

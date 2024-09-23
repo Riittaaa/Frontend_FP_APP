@@ -1,3 +1,37 @@
+.orders {
+  height: calc(100vh - 50px);
+  margin: 20px;
+}
+
+.orders__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.orders__title {
+  margin: 0;
+}
+
+.orders__add-button {
+  background-color: #f39c12;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.orders__add-button:hover {
+  background-color: #e67e22;
+}
+
+.orders__table {
+  height: calc(100vh - 100px);
+  width: 100%;
+}
+
 .order-form {
   /* max-width: 800px; */
   margin: 60px;
