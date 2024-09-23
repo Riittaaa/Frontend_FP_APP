@@ -1,7 +1,12 @@
 import "@fortawesome/react-fontawesome";
 import "./App.css";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
@@ -25,58 +30,100 @@ import EditBranch from "./components/customer_branches/EditBranch";
 import ViewDrivers from "./components/drivers/ViewDrivers";
 import AddDriver from "./components/drivers/AddDriver";
 import EditDriver from "./components/drivers/EditDriver";
-import AddOrder from "./components/orders/AddOrder";
-import OrderLists from "./components/orders/OrderLists";
+import Dashboard from "./components/Dashboard";
+
+const ProtectedRoute = ({ element }) => {
+  const token = localStorage.getItem("token");
+  return token ? element : <Navigate to="/login" />;
+};
 
 function App() {
+  const token = localStorage.getItem("token");
+  console.log(token);
+
   return (
-    <>
-      <ApolloProvider client={client}>
-        <Provider store={store}>
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/addVehicle" element={<AddVehicle />} />
-              <Route path="/vehicles" element={<ViewVehicles />} />
-              <Route path="/editVehicle/:vehicleId" element={<EditVehicle />} />
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Dashboard />} />}
+            />
+            <Route
+              path="/login"
+              element={token ? <Navigate to="/dashboard" replace /> : <Login />}
+            />
 
-              <Route path="/goods" element={<ViewGoods />} />
-              <Route path="/addGoods" element={<AddGoods />} />
-              <Route path="/editGoods/:goodsId" element={<EditGoods />} />
+            <Route
+              path="/addVehicle"
+              element={<ProtectedRoute element={<AddVehicle />} />}
+            />
+            <Route
+              path="/vehicles"
+              element={<ProtectedRoute element={<ViewVehicles />} />}
+            />
+            <Route
+              path="/editVehicle/:vehicleId"
+              element={<ProtectedRoute element={<EditVehicle />} />}
+            />
 
-              <Route path="/customers" element={<ViewCustomers />} />
-              <Route path="/addCustomer" element={<AddCustomer />} />
-              <Route
-                path="/editCustomer/:customerId"
-                element={<EditCustomer />}
-              />
+            <Route
+              path="/goods"
+              element={<ProtectedRoute element={<ViewGoods />} />}
+            />
+            <Route
+              path="/addGoods"
+              element={<ProtectedRoute element={<AddGoods />} />}
+            />
+            <Route
+              path="/editGoods/:goodsId"
+              element={<ProtectedRoute element={<EditGoods />} />}
+            />
 
-              <Route
-                path="/customers/:customerId/branches"
-                element={<ViewBranches />}
-              />
-              <Route
-                path="/customers/:customerId/addBranch"
-                element={<AddBranch />}
-              />
-              <Route
-                path="/customers/:customerId/branches/:customerbranchId/editBranch"
-                element={<EditBranch />}
-              />
+            <Route
+              path="/customers"
+              element={<ProtectedRoute element={<ViewCustomers />} />}
+            />
+            <Route
+              path="/addCustomer"
+              element={<ProtectedRoute element={<AddCustomer />} />}
+            />
+            <Route
+              path="/editCustomer/:customerId"
+              element={<ProtectedRoute element={<EditCustomer />} />}
+            />
+            <Route
+              path="/customers/:customerId/branches"
+              element={<ProtectedRoute element={<ViewBranches />} />}
+            />
+            <Route
+              path="/customers/:customerId/addBranch"
+              element={<ProtectedRoute element={<AddBranch />} />}
+            />
+            <Route
+              path="/customers/:customerId/branches/:customerbranchId/editBranch"
+              element={<ProtectedRoute element={<EditBranch />} />}
+            />
 
-              <Route path="/drivers" element={<ViewDrivers />} />
-              <Route path="/addDriver" element={<AddDriver />} />
-              <Route path="/editDriver/:driverId" element={<EditDriver />} />
-
-              <Route path="/orderlists" element={<OrderLists />} />
-              <Route path="/addOrder" element={<AddOrder />} />
-            </Routes>
-          </Router>
-        </Provider>
-      </ApolloProvider>
-    </>
+            <Route
+              path="/drivers"
+              element={<ProtectedRoute element={<ViewDrivers />} />}
+            />
+            <Route
+              path="/addDriver"
+              element={<ProtectedRoute element={<AddDriver />} />}
+            />
+            <Route
+              path="/editDriver/:driverId"
+              element={<ProtectedRoute element={<EditDriver />} />}
+            />
+          </Routes>
+        </Router>
+      </Provider>
+    </ApolloProvider>
   );
 }
 

@@ -5,8 +5,10 @@ import { LOGIN_USER } from "../graphql/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { loginSuccess, loginFailure } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -84,6 +86,7 @@ function Login() {
           );
           localStorage.setItem("token", data.loginUser.token);
           console.log(data.loginUser.message);
+          navigate("/dashboard");
         } else {
           dispatch(loginFailure(data.loginUser.error));
           console.error("Login failed:", data.loginUser.error);
