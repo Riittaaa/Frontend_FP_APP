@@ -26,7 +26,6 @@ function AddCustomer() {
               email,
               address,
               phone: parseInt(phone),
-              groupId: 1,
             },
           },
         },
