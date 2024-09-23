@@ -42,7 +42,6 @@ function EditCustomer() {
               email,
               address,
               phone: parseInt(phone),
-              groupId: 1,
             },
           },
         },

@@ -60,7 +60,10 @@ export const FETCH_GOODS = gql`
         id
         name
         availability
-        category
+        category {
+          id
+          name
+        }
         soldAs
         unit
       }
@@ -77,7 +80,10 @@ export const FETCH_SPECIFIC_GOODS = gql`
         name
         id
         availability
-        category
+        category {
+          id
+          name
+        }
         soldAs
         unit
       }
@@ -161,9 +167,27 @@ export const FETCH_DRIVER = gql`
       address
       phoneNo
       status
-      userId
       groupId
     }
+  }
+`;
+
+export const FETCH_CATEGORIES = gql`
+  query categories {
+    allCategory {
+      category {
+        id
+        name
+      }
+      message
+      errors
+    }
+  }
+`;
+
+export const FETCH_AVAILABILITIES = gql`
+  query availability {
+    availibility
   }
 `;
 

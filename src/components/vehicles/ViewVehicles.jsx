@@ -76,7 +76,6 @@ function ViewVehicles() {
     { field: "id", headerName: "Id", flex: 1, sortable: true },
     { field: "brand", headerName: "Brand", flex: 1, sortable: true },
     { field: "capacity", headerName: "Capacity", flex: 1, sortable: true },
-    { field: "groupId", headerName: "Group Id", flex: 1, sortable: true },
     {
       field: "licensePlate",
       headerName: "License Plate",

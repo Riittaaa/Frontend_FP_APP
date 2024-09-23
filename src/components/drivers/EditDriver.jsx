@@ -44,13 +44,15 @@ function EditDriver() {
     try {
       const { data } = await updateDriver({
         variables: {
-          input: {
-            name,
-            email,
-            address,
-            phoneNo: parseInt(phoneNo),
-            status,
+          driverinput: {
             driverId,
+            driverInput: {
+              name,
+              email,
+              address,
+              phoneNo: parseInt(phoneNo),
+              status,
+            },
           },
         },
       });
