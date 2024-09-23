@@ -23,7 +23,6 @@ export const CREATE_VEHICLE = gql`
         vehicleType
         status
         capacity
-        groupId
       }
       errors
       message
@@ -40,7 +39,6 @@ export const UPDATE_VEHICLE = gql`
         vehicleType
         status
         capacity
-        groupId
       }
       errors
       message
@@ -66,7 +64,10 @@ export const CREATE_GOODS = gql`
       goods {
         id
         name
-        category
+        category {
+          id
+          name
+        }
         availability
       }
       message
@@ -81,7 +82,10 @@ export const UPDATE_GOODS = gql`
       goods {
         id
         name
-        category
+        category {
+          id
+          name
+        }
         availability
         soldAs
         unit
@@ -201,27 +205,27 @@ export const CREATE_DRIVER = gql`
         groupId
         phoneNo
         status
-        userId
       }
-      error
+      errors
       message
     }
   }
 `;
 
 export const UPDATE_DRIVER = gql`
-  mutation updateDriver($input: UpdateDriverInput!) {
-    updateDriver(input: $input) {
+  mutation updateDriver($driverinput: UpdateDriverInput!) {
+    updateDriver(input: $driverinput) {
       driver {
-        id
         name
-        email
         address
         phoneNo
-        status
-        userId
         groupId
+        email
+        status
       }
+      errors
+      success
+      message
     }
   }
 `;
@@ -229,7 +233,7 @@ export const UPDATE_DRIVER = gql`
 export const DELETE_DRIVER = gql`
   mutation deleteDriver($input: DeleteDriverInput!) {
     deleteDriver(input: $input) {
-      error
+      errors
       message
     }
   }

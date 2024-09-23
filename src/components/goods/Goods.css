@@ -55,7 +55,7 @@
 .add-goods__heading,
 .edit-goods__heading {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -123,6 +123,12 @@
   display: flex;
   justify-content: center;
   color: #f39c12;
+  text-decoration: none;
+}
+
+.add-goods__link:hover,
+.edit-goods__link:hover {
+  text-decoration: underline;
 }
 
 .goods__actions {

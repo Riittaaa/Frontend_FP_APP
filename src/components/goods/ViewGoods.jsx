@@ -69,11 +69,17 @@ function ViewGoods() {
   };
 
   const [colDefs, setColDefs] = useState([
-    { field: "id", headerName: "ID", sortable: true, sort: "asc" },
+    {
+      field: "id",
+      headerName: "ID",
+      sortable: true,
+      sort: "asc",
+      hide: true,
+    },
     { field: "name", headerName: "Product Name", flex: 1, sortable: true },
     { field: "soldAs", headerName: "Sold As", flex: 1, sortable: true },
     { field: "unit", headerName: "Unit", flex: 1, sortable: true },
-    { field: "category", headerName: "Category", flex: 1, sortable: true },
+    { field: "category.name", headerName: "Category", flex: 1, sortable: true },
     { field: "availability", headerName: "Available", flex: 1, sortable: true },
     {
       headerName: "Actions",

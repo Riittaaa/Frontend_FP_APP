@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import { FETCH_SPECIFIC_GOODS } from "../../graphql/queries";
+import {
+  FETCH_AVAILABILITIES,
+  FETCH_CATEGORIES,
+  FETCH_SPECIFIC_GOODS,
+} from "../../graphql/queries";
 import { UPDATE_GOODS } from "../../graphql/mutations";
 import "./Goods.css";
 
@@ -10,23 +14,36 @@ function EditGoods() {
   const { goodsId } = useParams();
 
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("Fuel");
+  const [category, setCategory] = useState("");
   const [soldAs, setSoldAs] = useState("");
   const [unit, setUnit] = useState("");
-  const [availability, setAvailability] = useState("IN_STOCK");
+  const [availability, setAvailability] = useState("");
 
   const { loading, error, data } = useQuery(FETCH_SPECIFIC_GOODS, {
     variables: { goodsId: goodsId },
   });
+  // console.log(data);
+  const {
+    data: categories,
+    loading: categoriesLoading,
+    error: categoriesError,
+  } = useQuery(FETCH_CATEGORIES);
+  const {
+    data: availabilities,
+    loading: availabilitiesLoading,
+    error: availabilitiesError,
+  } = useQuery(FETCH_AVAILABILITIES);
 
   useEffect(() => {
     if (data && data.specificGoods && data.specificGoods.goods.length > 0) {
       const goods = data.specificGoods.goods[0];
+      // console.log(goods.category.name);
+      // console.log(goods.availability);
       setName(goods.name || "");
-      setCategory(goods.category || "Fuel");
+      setCategory(goods.category.id || "");
       setSoldAs(goods.soldAs || "");
       setUnit(goods.unit || "");
-      setAvailability(goods.availability || "IN_STOCK");
+      setAvailability(goods.availability || "");
     }
   }, [data]);
 
@@ -45,7 +62,7 @@ function EditGoods() {
               soldAs,
               unit,
               availability,
-              category,
+              categoryId: parseInt(category),
             },
           },
         },
@@ -58,7 +75,7 @@ function EditGoods() {
         console.log("Error", response.data.updateGoods.error);
       }
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating goods:", error);
     }
   };
 
@@ -74,7 +91,7 @@ function EditGoods() {
         <form className="edit-goods__form" onSubmit={handleSubmit}>
           <div className="edit-goods__form-group">
             <label htmlFor="name" className="edit-goods__label">
-              Product Name
+              Goods Name
             </label>
             <input
               type="text"
@@ -97,8 +114,18 @@ function EditGoods() {
               onChange={(e) => setCategory(e.target.value)}
               className="edit-goods__select"
             >
-              <option value="Fuel">Fuel</option>
-              <option value="Gas">Gas</option>
+              <option value="">Select category</option>
+              {categoriesLoading ? (
+                <option>Loading...</option>
+              ) : categoriesError ? (
+                <option>Error loading categories</option>
+              ) : (
+                categories.allCategory.category.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 
@@ -141,9 +168,18 @@ function EditGoods() {
               onChange={(e) => setAvailability(e.target.value)}
               className="edit-goods__select"
             >
-              <option value="DISCONTINUED">DISCONTINUED</option>
-              <option value="OUT_OF_STOCK">OUT_OF_STOCK</option>
-              <option value="IN_STOCK">IN_STOCK</option>
+              <option value="">Select availability</option>
+              {availabilitiesLoading ? (
+                <option>Loading...</option>
+              ) : availabilitiesError ? (
+                <option>Error loading availabilities</option>
+              ) : (
+                availabilities.availibility.map((availability) => (
+                  <option key={availability} value={availability}>
+                    {availability}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 
@@ -152,7 +188,7 @@ function EditGoods() {
             className="edit-goods__submit-button"
             disabled={updating}
           >
-            {updating ? "Updating..." : "Update Product"}
+            {updating ? "Updating..." : "Update goods"}
           </button>
 
           <a href="/goods" className="edit-goods__link">
@@ -161,7 +197,7 @@ function EditGoods() {
 
           {updateError && (
             <p className="edit-goods__error">
-              Error updating product: {updateError.message}
+              Error updating goods: {updateError.message}
             </p>
           )}
         </form>

@@ -3,8 +3,10 @@ import "./Vehicles.css";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_VEHICLE } from "../../graphql/mutations";
 import { FETCH_STATUSES } from "../../graphql/queries";
+import { useNavigate } from "react-router-dom";
 
 function AddVehicle() {
+  const navigate = useNavigate();
   const [licensePlate, setLicensePlate] = useState("");
   const [brand, setBrand] = useState("");
   const [vehicleType, setVehicleType] = useState("");
@@ -31,7 +33,6 @@ function AddVehicle() {
               vehicleType,
               status,
               capacity: parseInt(capacity, 10),
-              groupId: 1,
             },
           },
         },
@@ -40,6 +41,7 @@ function AddVehicle() {
         console.log("Error: " + data.createVehicle.errors);
       } else {
         console.log(data.createVehicle.message);
+        navigate("/vehicles");
       }
     } catch (err) {
       console.error("Error adding vehicle:", err);
@@ -135,7 +137,9 @@ function AddVehicle() {
             {loading ? "Adding..." : "Add Vehicle"}
           </button>
 
-          <a href="/vehicles">Back to Vehicles</a>
+          <a href="/vehicles" className="add-vehicle__link">
+            Back to Vehicles
+          </a>
           {error && <p>Error adding vehicle: {error.message}</p>}
         </form>
       </div>
