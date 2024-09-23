@@ -161,7 +161,6 @@ export const FETCH_DRIVER = gql`
       address
       phoneNo
       status
-      userId
       groupId
     }
   }
