@@ -55,14 +55,9 @@
 .add-customer__heading,
 .edit-customer__heading {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.add-customer__heading,
-.edit-customer__heading h3 {
-  margin: 0;
 }
 
 .add-customer__form,
