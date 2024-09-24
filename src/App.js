@@ -31,6 +31,9 @@ import ViewDrivers from "./components/drivers/ViewDrivers";
 import AddDriver from "./components/drivers/AddDriver";
 import EditDriver from "./components/drivers/EditDriver";
 import Dashboard from "./components/Dashboard";
+import OrderLists from "./components/orders/OrderLists";
+import AddOrder from "./components/orders/AddOrder";
+import EditOrder from "./components/orders/EditOrder";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -119,6 +122,19 @@ function App() {
             <Route
               path="/editDriver/:driverId"
               element={<ProtectedRoute element={<EditDriver />} />}
+            />
+
+            <Route
+              path="/orderlists"
+              element={<ProtectedRoute element={<OrderLists />} />}
+            />
+            <Route
+              path="/addOrder"
+              element={<ProtectedRoute element={<AddOrder />} />}
+            />
+            <Route
+              path="/editOrder/:orderId"
+              element={<ProtectedRoute element={<EditOrder />} />}
             />
           </Routes>
         </Router>
