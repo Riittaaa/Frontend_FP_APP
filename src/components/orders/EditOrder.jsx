@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Orders.css";
 import {
   FETCH_BRANCHES,
   FETCH_CUSTOMERS,
   FETCH_DRIVERS,
   FETCH_GOODS,
-  FETCH_RECURRING_FREQUENCIES,
   FETCH_UNITS,
   FETCH_VEHICLES,
+  FETCH_ORDERGROUP,
 } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_ORDERGROUP } from "../../graphql/mutations";
-import { useNavigate } from "react-router-dom";
+import { UPDATE_ORDERGROUP } from "../../graphql/mutations";
+import { useNavigate, useParams } from "react-router-dom";
 
-function AddOrder() {
+function EditOrder() {
   const navigate = useNavigate();
+  const { orderId } = useParams();
+  console.log(orderId);
   const [plannedAt, setPlannedAt] = useState("");
   const [customer, setCustomer] = useState("");
   const [customerBranch, setCustomerBranch] = useState("");
@@ -48,12 +50,6 @@ function AddOrder() {
   });
 
   const {
-    data: frequenciesData,
-    loading: frequenciesLoading,
-    error: frequenciesError,
-  } = useQuery(FETCH_RECURRING_FREQUENCIES);
-
-  const {
     data: allGoodsData,
     loading: allGoodsLoading,
     error: goodsError,
@@ -77,7 +73,46 @@ function AddOrder() {
     error: vehiclesError,
   } = useQuery(FETCH_VEHICLES);
 
-  const [createOrderGroup, { loading, error }] = useMutation(CREATE_ORDERGROUP);
+  const {
+    data: orderGroupData,
+    loading: orderGroupLoading,
+    error: orderGroupError,
+  } = useQuery(FETCH_ORDERGROUP, {
+    variables: {
+      id: orderId,
+    },
+  });
+
+  console.log(orderGroupData);
+
+  const [
+    updateOrderGroup,
+    { loading: updateGroupLoading, error: updateOrderGroupError },
+  ] = useMutation(UPDATE_ORDERGROUP);
+
+  useEffect(() => {
+    if (orderGroupData && orderGroupData.specificOrderGroup) {
+      const data = orderGroupData.specificOrderGroup.order;
+      setPlannedAt(data.plannedAt || "");
+      setCustomer(data.customer.id || "");
+      setCustomerBranch(data.customerBranch.id || "");
+      setRecurring(data.recurring || "");
+      setRecurrenceFrequency(data.recurrenceFrequency || "");
+      setNextDueDate(data.nextDueDate || "");
+      setRecurrenceEndDate(data.recurrenceEndDate || "");
+      setDriver(data.deliveryOrder.driverId || "");
+      setVehicle(data.deliveryOrder.vehicleId || "");
+      setDispatchedDate(data.deliveryOrder.dispatchedDate || "");
+      setDeliveryDate(data.deliveryOrder.deliveryDate || "");
+      setGoodsList(
+        data.deliveryOrder.lineItems.map((item) => ({
+          goods: item.goodsId,
+          quantity: item.quantity,
+          unit: item.unit,
+        }))
+      );
+    }
+  }, [orderGroupData]);
 
   const handleGoodsChange = (index, event) => {
     const { name, value } = event.target;
@@ -101,11 +136,13 @@ function AddOrder() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const { data } = await createOrderGroup({
+      const response = await updateOrderGroup({
         variables: {
-          groupOrder: {
-            createOrder: {
+          id: {
+            orderGroupId: parseInt(orderId),
+            updateOrder: {
               plannedAt,
               customerBranchId: parseInt(customerBranch),
               recurring,
@@ -129,24 +166,24 @@ function AddOrder() {
         },
       });
 
-      if (data.createOrderGroup.errors) {
-        console.log("Error:", data.createOrderGroup.errors);
-      } else {
-        console.log(
-          "Order created successfully:",
-          data.createOrderGroup.message
-        );
+      if (response && response.data.updateOrderGroup.message) {
+        console.log(response.data.updateOrderGroup.message);
         navigate("/orderlists");
+      } else {
+        console.log(response.data.updateOrderGroup.error);
       }
-    } catch (err) {
-      console.error("Error adding order group:", err);
+    } catch (error) {
+      console.error("Error updating order:", error);
     }
   };
+
+  if (orderGroupLoading) return <p>Loading...</p>;
+  if (orderGroupError) return <p>Error: {orderGroupError.message}</p>;
 
   return (
     <div className="container">
       <div className="order-form">
-        <h3 className="order-form__title">Add Order</h3>
+        <h3 className="order-form__title">Edit Order</h3>
         <form className="order-form__container" onSubmit={handleSubmit}>
           <div className="order-form__row">
             <div className="order-form__group">
@@ -221,6 +258,7 @@ function AddOrder() {
               </select>
             </div>
           </div>
+
           <div className="order-form__group">
             <label htmlFor="recurring" className="order-form__label">
               Recurring
@@ -234,6 +272,7 @@ function AddOrder() {
               className="order-form__input-checkbox"
             />
           </div>
+
           {recurring && (
             <div className="order-form__row">
               <div className="order-form__group">
@@ -243,27 +282,15 @@ function AddOrder() {
                 >
                   Recurrence Frequency
                 </label>
-                <select
+                <input
+                  type="text"
                   id="recurrenceFrequency"
                   name="recurrenceFrequency"
                   value={recurrenceFrequency}
                   onChange={(e) => setRecurrenceFrequency(e.target.value)}
-                  className="order-form__select"
+                  className="order-form__input"
                   required
-                >
-                  <option value="">Select Recurrence Frequency</option>
-                  {frequenciesLoading ? (
-                    <option>Loading...</option>
-                  ) : frequenciesError ? (
-                    <option>Error loading frequencies</option>
-                  ) : (
-                    frequenciesData?.frequency?.map((frequency) => (
-                      <option key={frequency} value={frequency}>
-                        {frequency}
-                      </option>
-                    ))
-                  )}
-                </select>
+                />
               </div>
               <div className="order-form__group">
                 <label htmlFor="nextDueDate" className="order-form__label">
@@ -298,6 +325,7 @@ function AddOrder() {
               </div>
             </div>
           )}
+
           {goodsList.map((goodsItem, index) => (
             <div key={index} className="order-form__row">
               <div className="order-form__group">
@@ -370,16 +398,17 @@ function AddOrder() {
               </div>
             </div>
           ))}
+
           <div className="buttons">
             <button
               type="button"
               onClick={handleAddGoods}
               className="order-form__button order-form__button--add-goods"
             >
-              Add Goods
+              + Add Goods
             </button>
           </div>
-          <hr />
+
           <div className="order-form__row">
             <div className="order-form__group">
               <label htmlFor="driver" className="order-form__label">
@@ -435,6 +464,7 @@ function AddOrder() {
               </select>
             </div>
           </div>
+
           <div className="order-form__row">
             <div className="order-form__group">
               <label htmlFor="dispatchedDate" className="order-form__label">
@@ -466,17 +496,23 @@ function AddOrder() {
               />
             </div>
           </div>
+
           <div className="buttons">
-            <button type="submit" className="order-form__submit-button">
-              {loading ? "Submitting..." : "Submit Order"}
+            <button
+              type="submit"
+              className="order-form__button order-form__submit-button"
+            >
+              {updateGroupLoading ? "Updating..." : "Update Order"}
             </button>
           </div>
         </form>
 
-        {error && <p className="order-form__error">{error.message}</p>}
+        {updateOrderGroupError && (
+          <p className="add-orders__error">{updateOrderGroupError.message}</p>
+        )}
       </div>
     </div>
   );
 }
 
-export default AddOrder;
+export default EditOrder;

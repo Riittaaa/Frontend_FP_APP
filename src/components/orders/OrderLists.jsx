@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { useNavigate } from "react-router-dom";
 import { FETCH_ORDERGROUPS } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
+import "./Orders.css";
 
 function OrderLists() {
   const navigate = useNavigate();
@@ -23,9 +24,16 @@ function OrderLists() {
         <div className="orders__actions">
           <button
             className="orders__action-button orders__action-button--edit"
-            onClick={() => handleCreateDelivery(params.data.order.id)}
+            onClick={() => handleEdit(params.data.order.id)}
           >
-            Create Delivery Order
+            Edit
+          </button>
+
+          <button
+            className="orders__action-button orders__action-button--edit"
+            onClick={() => handleDetails(params.data.order.id)}
+          >
+            Details
           </button>
         </div>
       </>
@@ -41,15 +49,8 @@ function OrderLists() {
       sort: "asc",
     },
     {
-      field: "order.createdAt",
-      headerName: "Created At",
-      flex: 1,
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      field: "order.recurring",
-      headerName: "Recurring",
+      field: "order.customer.name",
+      headerName: "Customer Name",
       flex: 1,
       sortable: true,
       minWidth: 150,
@@ -61,16 +62,18 @@ function OrderLists() {
       sortable: true,
       minWidth: 150,
     },
+
     {
-      field: "order.customer.name",
-      headerName: "Customer Name",
+      field: "order.customerBranch.branchLocation",
+      headerName: "Ship To",
       flex: 1,
       sortable: true,
       minWidth: 150,
     },
+
     {
-      field: "order.lineItems[{0}]",
-      headerName: "line Name",
+      field: "order.recurring",
+      headerName: "Recurring",
       flex: 1,
       sortable: true,
       minWidth: 150,
@@ -117,8 +120,12 @@ function OrderLists() {
     navigate("/addOrder");
   };
 
-  const handleCreateDelivery = (orderId) => {
-    navigate(`/addDelivery/${orderId}`);
+  const handleEdit = (orderId) => {
+    navigate(`/editOrder/${orderId}`);
+  };
+
+  const handleDetails = (orderId) => {
+    alert("click");
   };
 
   if (loading) return <p>Loading...</p>;
@@ -138,7 +145,6 @@ function OrderLists() {
           rowData={rowData}
           columnDefs={colDefs}
           defaultColDef={defaultColDef}
-          masterDetail={true}
           detailCellRendererParams={detailCellRendererParams}
           pagination={true}
           paginationPageSize={10}
