@@ -196,27 +196,95 @@ export const FETCH_ORDERGROUPS = gql`
     allOrderGroup {
       order {
         id
-        createdAt
-        recurring
         customer {
           id
           name
-          phone
         }
         customerBranch {
+          id
           branchLocation
-          customerId
         }
-        groupId
+        childOrderGroups {
+          id
+        }
+        createdAt
         plannedAt
-      }
-      lineItems {
-        id
-        goodsId
-        quantity
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          vehicleId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
       }
       errors
       message
     }
+  }
+`;
+
+export const FETCH_UNITS = gql`
+  query unit {
+    unit
+  }
+`;
+
+export const FETCH_ORDERGROUP = gql`
+  query specificOrderGroup($id: ID!) {
+    specificOrderGroup(id: $id) {
+      order {
+        id
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        createdAt
+        plannedAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          vehicleId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const FETCH_RECURRING_FREQUENCIES = gql`
+  query recurringFrequencies {
+    frequency
   }
 `;

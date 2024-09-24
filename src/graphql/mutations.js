@@ -244,22 +244,78 @@ export const CREATE_ORDERGROUP = gql`
     createOrderGroup(input: $groupOrder) {
       order {
         id
-        createdAt
-        recurring
         customer {
           id
           name
         }
         customerBranch {
+          id
           branchLocation
         }
-        groupId
-        plannedAt
+        childOrderGroups {
+          id
+        }
+        createdAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
       }
-      lineItems {
+      errors
+      message
+    }
+  }
+`;
+
+export const UPDATE_ORDERGROUP = gql`
+  mutation updateOrderGroup($id: UpdateOrderGroupInput!) {
+    updateOrderGroup(input: $id) {
+      order {
         id
-        goodsId
-        quantity
+        plannedAt
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        createdAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          vehicleId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
       }
       errors
       message
