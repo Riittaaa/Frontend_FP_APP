@@ -68,7 +68,7 @@ function Navbar() {
                 <i className="fas fa-truck"></i> Vehicles
               </Link>
             </li>
-            <li className="order-dropdown">
+            {/* <li className="order-dropdown">
               <Link onClick={closeMenu}>
                 <i className="fas fa-shopping-cart"></i> Orders
                 <i className="fas fa-angle-down"></i>
@@ -79,7 +79,7 @@ function Navbar() {
                 <a href="/deliveryOrders">Delivery Order</a>
                 <a href="/recurringOrders">Recurring Order</a>
               </div>
-            </li>
+            </li> */}
 
             <li>
               <Link to="/drivers" onClick={closeMenu}>
