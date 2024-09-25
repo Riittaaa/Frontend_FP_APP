@@ -15,8 +15,7 @@ function EditBranch() {
   const [location, setLocation] = useState("");
   const [email, setEmail] = useState("branch@email.com");
 
-
-  const { loading, error, data } = useQuery(FETCH_BRANCH, {
+  const { loading, error, data, refetch } = useQuery(FETCH_BRANCH, {
     variables: { id: customerBranchId },
   });
 
@@ -36,17 +35,21 @@ function EditBranch() {
       const response = await updateBranch({
         variables: {
           input: {
-            id: customerBranchId,
-            branchLocation: location,
+            customerbranchInput: {
+              customerId: customerId,
+              branchLocation: location,
+            },
+            customerbranchId: customerBranchId,
           },
         },
       });
 
       if (response && response.data.updateCustomerbranch.message) {
+        await refetch();
         console.log(response.data.updateCustomerbranch.message);
         navigate(`/customers/${customerId}/branches`);
       } else {
-        console.log(response.data.updateCustomerbranch.error);
+        console.log(response.data.updateCustomerbranch.errors);
       }
     } catch (error) {
       console.error("Error updating branch:", error);
@@ -54,7 +57,7 @@ function EditBranch() {
   };
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return <p>Error: {error.errors}</p>;
 
   return (
     <div className="add-customer">
