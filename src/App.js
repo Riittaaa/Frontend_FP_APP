@@ -55,7 +55,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route
               path="/dashboard"
-              element={<ProtectedRoute element={<Dashboard />} />}
+              element={<ProtectedRoute element={<OrderLists />} />}
             />
             <Route
               path="/login"
@@ -139,10 +139,10 @@ function App() {
               element={<ProtectedRoute element={<EditDriver />} />}
             />
 
-            <Route
+            {/* <Route
               path="/orderlists"
               element={<ProtectedRoute element={<OrderLists />} />}
-            />
+            /> */}
             <Route
               path="/addOrder"
               element={<ProtectedRoute element={<AddOrder />} />}
