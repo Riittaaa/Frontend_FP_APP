@@ -36,14 +36,16 @@ function ViewBranches() {
         const response = await deleteBranch({
           variables: {
             input: {
-              customerbranchId,
+              customerbranchId: parseInt(customerbranchId),
             },
           },
         });
 
         if (response && response.data.deleteCustomerbranch.message) {
           setRowData((prevData) =>
-            prevData.filter((customer) => customer.id !== customerId)
+            prevData.filter(
+              (customerbranch) => customerbranch.id !== customerbranchId
+            )
           );
           console.log(response.data.deleteCustomerbranch.message);
         } else {

@@ -9,9 +9,10 @@ function AddBranch() {
   const { customerId } = useParams();
   const { refetch } = useQuery(FETCH_BRANCHES, {
     variables: {
-      customerId,
+      customerId: parseInt(customerId),
     },
   });
+
   const [location, setLocation] = useState("");
   const [email, setEmail] = useState("branch@email.com");
 
@@ -24,8 +25,10 @@ function AddBranch() {
       const { data } = await createBranch({
         variables: {
           customerBranch: {
-            customerId,
-            branchLocation: location,
+            customerbranchInput: {
+              customerId,
+              branchLocation: location,
+            },
           },
         },
       });
@@ -33,8 +36,8 @@ function AddBranch() {
       if (data.errors) {
         console.log("Error:" + data.addCustomerbranch.errors);
       } else {
-        console.log(data.addCustomerbranch.message);
         await refetch();
+        console.log(data.addCustomerbranch.message);
         navigate(`/customers/${customerId}/branches`);
       }
     } catch (err) {

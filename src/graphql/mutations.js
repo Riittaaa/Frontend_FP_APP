@@ -229,7 +229,7 @@ export const DELETE_BRANCH = gql`
         branchLocation
       }
       message
-      error
+      errors
     }
   }
 `;
