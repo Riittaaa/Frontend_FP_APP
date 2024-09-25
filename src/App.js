@@ -34,6 +34,9 @@ import Dashboard from "./components/Dashboard";
 import OrderLists from "./components/orders/OrderLists";
 import AddOrder from "./components/orders/AddOrder";
 import EditOrder from "./components/orders/EditOrder";
+import ViewCategories from "./components/categories/ViewCategories";
+import AddCategory from "./components/categories/AddCategory";
+import EditCategory from "./components/categories/EditCategory";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -42,7 +45,6 @@ const ProtectedRoute = ({ element }) => {
 
 function App() {
   const token = localStorage.getItem("token");
-  console.log(token);
 
   return (
     <ApolloProvider client={client}>
@@ -84,6 +86,19 @@ function App() {
             <Route
               path="/editGoods/:goodsId"
               element={<ProtectedRoute element={<EditGoods />} />}
+            />
+
+            <Route
+              path="/categories"
+              element={<ProtectedRoute element={<ViewCategories />} />}
+            />
+            <Route
+              path="/addCategory"
+              element={<ProtectedRoute element={<AddCategory />} />}
+            />
+            <Route
+              path="/editCategory/:categoryId"
+              element={<ProtectedRoute element={<EditCategory />} />}
             />
 
             <Route
