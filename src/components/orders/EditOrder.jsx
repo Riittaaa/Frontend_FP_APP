@@ -8,6 +8,8 @@ import {
   FETCH_UNITS,
   FETCH_VEHICLES,
   FETCH_ORDERGROUP,
+  FETCH_DELIVERY_STATUSES,
+  FETCH_RECURRING_FREQUENCIES,
 } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_ORDERGROUP } from "../../graphql/mutations";
@@ -16,22 +18,24 @@ import { useNavigate, useParams } from "react-router-dom";
 function EditOrder() {
   const navigate = useNavigate();
   const { orderId } = useParams();
-  console.log(orderId);
+  // console.log(orderId);
   const [plannedAt, setPlannedAt] = useState("");
   const [customer, setCustomer] = useState("");
   const [customerBranch, setCustomerBranch] = useState("");
   const [goodsList, setGoodsList] = useState([
-    { goods: "", quantity: "", unit: "" },
+    { id: "", goods: "", quantity: "", unit: "" },
   ]);
   const [recurring, setRecurring] = useState(false);
-  const [recurrenceFrequency, setRecurrenceFrequency] = useState("");
-  const [nextDueDate, setNextDueDate] = useState("");
-  const [recurrenceEndDate, setRecurrenceEndDate] = useState("");
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState(null);
+  // const [nextDueDate, setNextDueDate] = useState("");
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState(null);
 
   const [driver, setDriver] = useState("");
   const [vehicle, setVehicle] = useState("");
-  const [dispatchedDate, setDispatchedDate] = useState("");
-  const [deliveryDate, setDeliveryDate] = useState("");
+  const [status, setStatus] = useState("");
+
+  // const [dispatchedDate, setDispatchedDate] = useState("");
+  // const [deliveryDate, setDeliveryDate] = useState("");
 
   const {
     data: allCustomersData,
@@ -74,6 +78,18 @@ function EditOrder() {
   } = useQuery(FETCH_VEHICLES);
 
   const {
+    data: statusData,
+    loading: statusLoading,
+    error: statusError,
+  } = useQuery(FETCH_DELIVERY_STATUSES);
+
+  const {
+    data: frequenciesData,
+    loading: frequenciesLoading,
+    error: frequenciesError,
+  } = useQuery(FETCH_RECURRING_FREQUENCIES);
+
+  const {
     data: orderGroupData,
     loading: orderGroupLoading,
     error: orderGroupError,
@@ -83,12 +99,11 @@ function EditOrder() {
     },
   });
 
-  console.log(orderGroupData);
-
   const [
     updateOrderGroup,
     { loading: updateGroupLoading, error: updateOrderGroupError },
   ] = useMutation(UPDATE_ORDERGROUP);
+  // console.log(orderGroupData);
 
   useEffect(() => {
     if (orderGroupData && orderGroupData.specificOrderGroup) {
@@ -96,16 +111,18 @@ function EditOrder() {
       setPlannedAt(data.plannedAt || "");
       setCustomer(data.customer.id || "");
       setCustomerBranch(data.customerBranch.id || "");
-      setRecurring(data.recurring || "");
-      setRecurrenceFrequency(data.recurrenceFrequency || "");
-      setNextDueDate(data.nextDueDate || "");
-      setRecurrenceEndDate(data.recurrenceEndDate || "");
+      setRecurring(data.recurring || false);
+      setRecurrenceFrequency(data.recurrenceFrequency.toUpperCase() || null);
+      // setNextDueDate(data.nextDueDate || "");
+      setRecurrenceEndDate(data.recurrenceEndDate || null);
       setDriver(data.deliveryOrder.driverId || "");
       setVehicle(data.deliveryOrder.vehicleId || "");
-      setDispatchedDate(data.deliveryOrder.dispatchedDate || "");
-      setDeliveryDate(data.deliveryOrder.deliveryDate || "");
+      setStatus(data.deliveryOrder.status || "");
+      // setDispatchedDate(data.deliveryOrder.dispatchedDate || "");
+      // setDeliveryDate(data.deliveryOrder.deliveryDate || "");
       setGoodsList(
         data.deliveryOrder.lineItems.map((item) => ({
+          id: item.id,
           goods: item.goodsId,
           quantity: item.quantity,
           unit: item.unit,
@@ -140,22 +157,23 @@ function EditOrder() {
     try {
       const response = await updateOrderGroup({
         variables: {
-          id: {
+          orderGroup: {
             orderGroupId: parseInt(orderId),
             updateOrder: {
               plannedAt,
               customerBranchId: parseInt(customerBranch),
               recurring,
               recurrenceFrequency,
-              nextDueDate,
+              // nextDueDate,
               recurrenceEndDate,
               deliveryOrderAttributes: {
                 driverId: parseInt(driver),
                 vehicleId: parseInt(vehicle),
-                status: "PENDING",
-                dispatchedDate,
-                deliveryDate,
+                status,
+                // dispatchedDate,
+                // deliveryDate,
                 linedItemsAttributes: goodsList.map((item) => ({
+                  id: item.id,
                   goodsId: parseInt(item.goods),
                   quantity: parseInt(item.quantity),
                   unit: item.unit,
@@ -282,17 +300,29 @@ function EditOrder() {
                 >
                   Recurrence Frequency
                 </label>
-                <input
-                  type="text"
+                <select
                   id="recurrenceFrequency"
                   name="recurrenceFrequency"
                   value={recurrenceFrequency}
                   onChange={(e) => setRecurrenceFrequency(e.target.value)}
-                  className="order-form__input"
+                  className="order-form__select"
                   required
-                />
+                >
+                  <option value="">Select Recurrence Frequency</option>
+                  {frequenciesLoading ? (
+                    <option>Loading...</option>
+                  ) : frequenciesError ? (
+                    <option>Error loading frequencies</option>
+                  ) : (
+                    frequenciesData?.frequency?.map((frequency) => (
+                      <option key={frequency} value={frequency}>
+                        {frequency}
+                      </option>
+                    ))
+                  )}
+                </select>
               </div>
-              <div className="order-form__group">
+              {/* <div className="order-form__group">
                 <label htmlFor="nextDueDate" className="order-form__label">
                   Next Due Date
                 </label>
@@ -305,7 +335,7 @@ function EditOrder() {
                   className="order-form__input"
                   required
                 />
-              </div>
+              </div> */}
               <div className="order-form__group">
                 <label
                   htmlFor="recurrenceEndDate"
@@ -328,6 +358,14 @@ function EditOrder() {
 
           {goodsList.map((goodsItem, index) => (
             <div key={index} className="order-form__row">
+              {/* <p>{goodsItem.lineItemId}</p> */}
+              {/* <div className="order-form__group">
+                <label htmlFor="goods" className="order-form__label">
+                  Line Item Id
+                </label>
+                <input type="text" value={goodsItem.lineItemId} />
+              </div> */}
+
               <div className="order-form__group">
                 <label htmlFor="goods" className="order-form__label">
                   Select Goods
@@ -463,9 +501,35 @@ function EditOrder() {
                 )}
               </select>
             </div>
+            <div className="order-form__group">
+              <label htmlFor="status" className="order-form__label">
+                Delivery Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="order-form__select"
+                required
+              >
+                <option value="">Select Delivery Status</option>
+                {statusLoading ? (
+                  <option>Loading...</option>
+                ) : statusError ? (
+                  <option>Error loading statuses</option>
+                ) : (
+                  statusData?.deliveryStatus?.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
           </div>
 
-          <div className="order-form__row">
+          {/* <div className="order-form__row">
             <div className="order-form__group">
               <label htmlFor="dispatchedDate" className="order-form__label">
                 Dispatched Date
@@ -495,7 +559,7 @@ function EditOrder() {
                 required
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="buttons">
             <button

@@ -22,14 +22,15 @@ function AddOrder() {
     { goods: "", quantity: "", unit: "" },
   ]);
   const [recurring, setRecurring] = useState(false);
-  const [recurrenceFrequency, setRecurrenceFrequency] = useState("");
-  const [nextDueDate, setNextDueDate] = useState("");
-  const [recurrenceEndDate, setRecurrenceEndDate] = useState("");
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState(null);
+  // const [nextDueDate, setNextDueDate] = useState("");
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState(null);
 
   const [driver, setDriver] = useState("");
   const [vehicle, setVehicle] = useState("");
-  const [dispatchedDate, setDispatchedDate] = useState("");
-  const [deliveryDate, setDeliveryDate] = useState("");
+  // const [status, setStatus] = useState("");
+  // const [dispatchedDate, setDispatchedDate] = useState("");
+  // const [deliveryDate, setDeliveryDate] = useState("");
 
   const {
     data: allCustomersData,
@@ -77,6 +78,12 @@ function AddOrder() {
     error: vehiclesError,
   } = useQuery(FETCH_VEHICLES);
 
+  // const {
+  //   data: statusData,
+  //   loading: statusLoading,
+  //   error: statusError,
+  // } = useQuery(FETCH_DELIVERY_STATUSES);
+
   const [createOrderGroup, { loading, error }] = useMutation(CREATE_ORDERGROUP);
 
   const handleGoodsChange = (index, event) => {
@@ -110,14 +117,14 @@ function AddOrder() {
               customerBranchId: parseInt(customerBranch),
               recurring,
               recurrenceFrequency,
-              nextDueDate,
+              // nextDueDate,
               recurrenceEndDate,
               deliveryOrderAttributes: {
                 driverId: parseInt(driver),
                 vehicleId: parseInt(vehicle),
-                status: "PENDING",
-                dispatchedDate,
-                deliveryDate,
+                // status: "PENDING",
+                // dispatchedDate,
+                // deliveryDate,
                 linedItemsAttributes: goodsList.map((item) => ({
                   goodsId: parseInt(item.goods),
                   quantity: parseInt(item.quantity),
@@ -265,7 +272,7 @@ function AddOrder() {
                   )}
                 </select>
               </div>
-              <div className="order-form__group">
+              {/* <div className="order-form__group">
                 <label htmlFor="nextDueDate" className="order-form__label">
                   Next Due Date
                 </label>
@@ -278,7 +285,7 @@ function AddOrder() {
                   className="order-form__input"
                   required
                 />
-              </div>
+              </div> */}
               <div className="order-form__group">
                 <label
                   htmlFor="recurrenceEndDate"
@@ -434,8 +441,34 @@ function AddOrder() {
                 )}
               </select>
             </div>
+            {/* <div className="order-form__group">
+              <label htmlFor="status" className="order-form__label">
+                Delivery Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="order-form__select"
+                required
+              >
+                <option value="">Select Delivery Status</option>
+                {statusLoading ? (
+                  <option>Loading...</option>
+                ) : statusError ? (
+                  <option>Error loading statuses</option>
+                ) : (
+                  statusData?.deliveryStatus?.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div> */}
           </div>
-          <div className="order-form__row">
+          {/* <div className="order-form__row">
             <div className="order-form__group">
               <label htmlFor="dispatchedDate" className="order-form__label">
                 Dispatched Date
@@ -465,7 +498,7 @@ function AddOrder() {
                 required
               />
             </div>
-          </div>
+          </div> */}
           <div className="buttons">
             <button type="submit" className="order-form__submit-button">
               {loading ? "Submitting..." : "Submit Order"}
