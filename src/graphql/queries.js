@@ -185,8 +185,130 @@ export const FETCH_CATEGORIES = gql`
   }
 `;
 
+export const FETCH_CATEGORY = gql`
+  query specificCategory($input: ID!) {
+    specificCategory(id: $input) {
+      category {
+        id
+        name
+      }
+      errors
+      message
+    }
+  }
+`;
+
 export const FETCH_AVAILABILITIES = gql`
   query availability {
     availibility
+  }
+`;
+
+export const FETCH_ORDERGROUPS = gql`
+  query OrderGroup {
+    allOrderGroup {
+      order {
+        id
+        customer {
+          id
+          name
+          email
+          address
+          phone
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        createdAt
+        plannedAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          vehicleId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const FETCH_UNITS = gql`
+  query unit {
+    unit
+  }
+`;
+
+export const FETCH_ORDERGROUP = gql`
+  query specificOrderGroup($id: ID!) {
+    specificOrderGroup(id: $id) {
+      order {
+        id
+        customer {
+          id
+          name
+          email
+          phone
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        createdAt
+        plannedAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          vehicleId
+          status
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const FETCH_RECURRING_FREQUENCIES = gql`
+  query recurringFrequencies {
+    frequency
+  }
+`;
+
+export const FETCH_DELIVERY_STATUSES = gql`
+  query deliveryStatus {
+    deliveryStatus
   }
 `;

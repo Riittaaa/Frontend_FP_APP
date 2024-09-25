@@ -109,6 +109,46 @@ export const DELETE_GOODS = gql`
   }
 `;
 
+export const CREATE_CATEGORY = gql`
+  mutation addCategory($input: CreateCategoryInput!) {
+    createCategory(input: $input) {
+      category {
+        id
+        name
+        groupId
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const UPDATE_CATEGORY = gql`
+  mutation updateCategory($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      category {
+        id
+        name
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const DELETE_CATEGORY = gql`
+  mutation deleteCategory($input: DeleteCategoryInput!) {
+    deleteCategory(input: $input) {
+      message
+      errors
+      category {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const CREATE_CUSTOMER = gql`
   mutation createCustomer($createCustomerInput: CreateCustomerInput!) {
     createCustomer(input: $createCustomerInput) {
@@ -162,21 +202,21 @@ export const CREATE_BRANCH = gql`
         customerId
       }
       message
-      error
+      errors
     }
   }
 `;
 
 export const UPDATE_BRANCH = gql`
-  mutation updateCustomerbranch($input: UpdateCustomerBranchInput!) {
+  mutation updateBranch($input: UpdateCustomerBranchInput!) {
     updateCustomerbranch(input: $input) {
+      errors
+      message
+      success
       customerBranch {
         id
         branchLocation
       }
-      message
-      success
-      error
     }
   }
 `;
@@ -233,6 +273,87 @@ export const UPDATE_DRIVER = gql`
 export const DELETE_DRIVER = gql`
   mutation deleteDriver($input: DeleteDriverInput!) {
     deleteDriver(input: $input) {
+      errors
+      message
+    }
+  }
+`;
+
+export const CREATE_ORDERGROUP = gql`
+  mutation CreateOrderGroup($groupOrder: CreateOrderGroupInput!) {
+    createOrderGroup(input: $groupOrder) {
+      order {
+        id
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        parentOrderGroupId
+        createdAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        deliveryOrder {
+          status
+          driverId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const UPDATE_ORDERGROUP = gql`
+  mutation UpdateOrderGroup($orderGroup: UpdateOrderGroupInput!) {
+    updateOrderGroup(input: $orderGroup) {
+      order {
+        id
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          status
+          dispatchedDate
+          driverId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
       errors
       message
     }

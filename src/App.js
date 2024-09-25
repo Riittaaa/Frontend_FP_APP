@@ -31,6 +31,12 @@ import ViewDrivers from "./components/drivers/ViewDrivers";
 import AddDriver from "./components/drivers/AddDriver";
 import EditDriver from "./components/drivers/EditDriver";
 import Dashboard from "./components/Dashboard";
+import OrderLists from "./components/orders/OrderLists";
+import AddOrder from "./components/orders/AddOrder";
+import EditOrder from "./components/orders/EditOrder";
+import ViewCategories from "./components/categories/ViewCategories";
+import AddCategory from "./components/categories/AddCategory";
+import EditCategory from "./components/categories/EditCategory";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -39,7 +45,6 @@ const ProtectedRoute = ({ element }) => {
 
 function App() {
   const token = localStorage.getItem("token");
-  console.log(token);
 
   return (
     <ApolloProvider client={client}>
@@ -84,6 +89,19 @@ function App() {
             />
 
             <Route
+              path="/categories"
+              element={<ProtectedRoute element={<ViewCategories />} />}
+            />
+            <Route
+              path="/addCategory"
+              element={<ProtectedRoute element={<AddCategory />} />}
+            />
+            <Route
+              path="/editCategory/:categoryId"
+              element={<ProtectedRoute element={<EditCategory />} />}
+            />
+
+            <Route
               path="/customers"
               element={<ProtectedRoute element={<ViewCustomers />} />}
             />
@@ -119,6 +137,19 @@ function App() {
             <Route
               path="/editDriver/:driverId"
               element={<ProtectedRoute element={<EditDriver />} />}
+            />
+
+            <Route
+              path="/orderlists"
+              element={<ProtectedRoute element={<OrderLists />} />}
+            />
+            <Route
+              path="/addOrder"
+              element={<ProtectedRoute element={<AddOrder />} />}
+            />
+            <Route
+              path="/editOrder/:orderId"
+              element={<ProtectedRoute element={<EditOrder />} />}
             />
           </Routes>
         </Router>
