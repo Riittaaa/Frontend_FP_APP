@@ -185,6 +185,19 @@ export const FETCH_CATEGORIES = gql`
   }
 `;
 
+export const FETCH_CATEGORY = gql`
+  query specificCategory($input: ID!) {
+    specificCategory(id: $input) {
+      category {
+        id
+        name
+      }
+      errors
+      message
+    }
+  }
+`;
+
 export const FETCH_AVAILABILITIES = gql`
   query availability {
     availibility
@@ -199,6 +212,9 @@ export const FETCH_ORDERGROUPS = gql`
         customer {
           id
           name
+          email
+          address
+          phone
         }
         customerBranch {
           id
@@ -248,6 +264,8 @@ export const FETCH_ORDERGROUP = gql`
         customer {
           id
           name
+          email
+          phone
         }
         customerBranch {
           id
@@ -261,13 +279,13 @@ export const FETCH_ORDERGROUP = gql`
         recurring
         recurrenceFrequency
         recurrenceEndDate
-        nextDueDate
         parentOrderGroupId
         deliveryOrder {
           deliveryDate
           dispatchedDate
           driverId
           vehicleId
+          status
           orderGroupId
           lineItems {
             id
@@ -286,5 +304,11 @@ export const FETCH_ORDERGROUP = gql`
 export const FETCH_RECURRING_FREQUENCIES = gql`
   query recurringFrequencies {
     frequency
+  }
+`;
+
+export const FETCH_DELIVERY_STATUSES = gql`
+  query deliveryStatus {
+    deliveryStatus
   }
 `;
