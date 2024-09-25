@@ -238,3 +238,87 @@ export const DELETE_DRIVER = gql`
     }
   }
 `;
+
+export const CREATE_ORDERGROUP = gql`
+  mutation CreateOrderGroup($groupOrder: CreateOrderGroupInput!) {
+    createOrderGroup(input: $groupOrder) {
+      order {
+        id
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        createdAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const UPDATE_ORDERGROUP = gql`
+  mutation updateOrderGroup($id: UpdateOrderGroupInput!) {
+    updateOrderGroup(input: $id) {
+      order {
+        id
+        plannedAt
+        customer {
+          id
+          name
+        }
+        customerBranch {
+          id
+          branchLocation
+        }
+        childOrderGroups {
+          id
+        }
+        createdAt
+        recurring
+        recurrenceFrequency
+        recurrenceEndDate
+        nextDueDate
+        parentOrderGroupId
+        deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driverId
+          vehicleId
+          orderGroupId
+          lineItems {
+            id
+            goodsId
+            quantity
+            unit
+          }
+        }
+      }
+      errors
+      message
+    }
+  }
+`;
