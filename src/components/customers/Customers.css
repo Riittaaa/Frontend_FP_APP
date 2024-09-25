@@ -149,6 +149,11 @@
   background-color: #f44336;
 }
 
+.customers__action-button--exportcsv {
+  background-color: #f44336;
+  background-color: #f39c12;
+}
+
 .ag-row {
   cursor: pointer;
 }
