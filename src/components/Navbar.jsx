@@ -68,6 +68,19 @@ function Navbar() {
                 <i className="fas fa-truck"></i> Vehicles
               </Link>
             </li>
+            <li className="order-dropdown">
+              <Link onClick={closeMenu}>
+                <i className="fas fa-shopping-cart"></i> Orders
+                <i className="fas fa-angle-down"></i>
+              </Link>
+
+              <div class="dropdown-content">
+                <a href="/orderlists">Order Group</a>
+                <a href="/deliveryOrders">Delivery Order</a>
+                <a href="/recurringOrders">Recurring Order</a>
+              </div>
+            </li>
+
             <li>
               <Link to="/drivers" onClick={closeMenu}>
                 <i className="fas fa-tags"></i> Drivers
