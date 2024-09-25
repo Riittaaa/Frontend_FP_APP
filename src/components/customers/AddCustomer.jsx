@@ -25,18 +25,18 @@ function AddCustomer() {
               name,
               email,
               address,
-              phone: parseInt(phone),
+              phone,
             },
           },
         },
       });
 
-      if (data.errors) {
-        console.log("Error:" + data.createCustomer.errors);
-      } else {
+      if (data.createCustomer.message) {
         await refetch();
         console.log(data.createCustomer.message);
         navigate("/customers");
+      } else {
+        console.log("Error:" + data.createCustomer.errors[0]);
       }
     } catch (err) {
       console.error("Error adding customer:", err);
@@ -120,7 +120,7 @@ function AddCustomer() {
 
           {error && (
             <p className="add-customer__error">
-              Error adding product: {error.message}
+              Error adding customer: {error.message}
             </p>
           )}
         </form>

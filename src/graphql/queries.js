@@ -312,3 +312,9 @@ export const FETCH_DELIVERY_STATUSES = gql`
     deliveryStatus
   }
 `;
+
+export const EXPORT_CSV = gql`
+  query csv($id: ID!) {
+    csvExport(id: $id)
+  }
+`;

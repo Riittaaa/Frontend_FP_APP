@@ -3,8 +3,8 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FETCH_CUSTOMERS } from "../../graphql/queries";
-import { useMutation, useQuery } from "@apollo/client";
+import { FETCH_CUSTOMERS, EXPORT_CSV } from "../../graphql/queries";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import "./Customers.css";
 import { DELETE_CUSTOMER } from "../../graphql/mutations";
 
@@ -13,6 +13,7 @@ function ViewCustomers() {
   const [rowData, setRowData] = useState([]);
   const { data, loading, error } = useQuery(FETCH_CUSTOMERS);
   const [deleteCustomer] = useMutation(DELETE_CUSTOMER);
+  const [exportCSV] = useLazyQuery(EXPORT_CSV);
 
   useEffect(() => {
     if (data && data.allCustomers) {
@@ -49,6 +50,20 @@ function ViewCustomers() {
     }
   };
 
+  const handleExport = async (customerId) => {
+    try {
+      const response = await exportCSV({ variables: { id: customerId } });
+      const csvUrl = response.data.csvExport;
+
+      window.open(
+        `https://b89d-2400-1a00-b060-748f-5ece-3a95-272a-7a49.ngrok-free.app${csvUrl}`,
+        "_blank"
+      );
+    } catch (error) {
+      console.error("Error exporting CSV:", error);
+    }
+  };
+
   const ActionCellRenderer = (params) => {
     return (
       <div className="customers__actions">
@@ -64,6 +79,13 @@ function ViewCustomers() {
           onClick={() => handleDelete(params.data.id)}
         >
           Delete
+        </button>
+
+        <button
+          className="customers__action-button customers__action-button--exportcsv"
+          onClick={() => handleExport(params.data.id)}
+        >
+          Export CSV
         </button>
       </div>
     );
@@ -132,6 +154,7 @@ function ViewCustomers() {
     <div className="customers">
       <div className="customers__header">
         <h2>Customers</h2>
+
         <button className="customers__add-button" onClick={handleAddCustomer}>
           + Add Customer
         </button>
