@@ -102,6 +102,10 @@ function ViewGoods() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading products: {error.message}</p>;
 
+  const handleCategories = () => {
+    navigate("/categories");
+  };
+
   const handleAddGoods = () => {
     navigate("/addGoods");
   };
@@ -110,9 +114,15 @@ function ViewGoods() {
     <div className="goods">
       <div className="goods__header">
         <h2 className="goods__title">Goods</h2>
-        <button className="goods__add-button" onClick={handleAddGoods}>
-          + Add Goods
-        </button>
+        <div className="buttons">
+          <button className="goods__category-button" onClick={handleCategories}>
+            Categories
+          </button>
+
+          <button className="goods__add-button" onClick={handleAddGoods}>
+            + Add Goods
+          </button>
+        </div>
       </div>
       <div className="goods__table ag-theme-material-dark">
         <AgGridReact

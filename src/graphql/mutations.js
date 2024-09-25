@@ -109,6 +109,46 @@ export const DELETE_GOODS = gql`
   }
 `;
 
+export const CREATE_CATEGORY = gql`
+  mutation addCategory($input: CreateCategoryInput!) {
+    createCategory(input: $input) {
+      category {
+        id
+        name
+        groupId
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const UPDATE_CATEGORY = gql`
+  mutation updateCategory($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      category {
+        id
+        name
+      }
+      errors
+      message
+    }
+  }
+`;
+
+export const DELETE_CATEGORY = gql`
+  mutation deleteCategory($input: DeleteCategoryInput!) {
+    deleteCategory(input: $input) {
+      message
+      errors
+      category {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const CREATE_CUSTOMER = gql`
   mutation createCustomer($createCustomerInput: CreateCustomerInput!) {
     createCustomer(input: $createCustomerInput) {
@@ -162,21 +202,21 @@ export const CREATE_BRANCH = gql`
         customerId
       }
       message
-      error
+      errors
     }
   }
 `;
 
 export const UPDATE_BRANCH = gql`
-  mutation updateCustomerbranch($input: UpdateCustomerBranchInput!) {
+  mutation updateBranch($input: UpdateCustomerBranchInput!) {
     updateCustomerbranch(input: $input) {
+      errors
+      message
+      success
       customerBranch {
         id
         branchLocation
       }
-      message
-      success
-      error
     }
   }
 `;
@@ -255,15 +295,14 @@ export const CREATE_ORDERGROUP = gql`
         childOrderGroups {
           id
         }
+        parentOrderGroupId
         createdAt
         recurring
         recurrenceFrequency
         recurrenceEndDate
         nextDueDate
-        parentOrderGroupId
         deliveryOrder {
-          deliveryDate
-          dispatchedDate
+          status
           driverId
           orderGroupId
           lineItems {
@@ -281,11 +320,10 @@ export const CREATE_ORDERGROUP = gql`
 `;
 
 export const UPDATE_ORDERGROUP = gql`
-  mutation updateOrderGroup($id: UpdateOrderGroupInput!) {
-    updateOrderGroup(input: $id) {
+  mutation UpdateOrderGroup($orderGroup: UpdateOrderGroupInput!) {
+    updateOrderGroup(input: $orderGroup) {
       order {
         id
-        plannedAt
         customer {
           id
           name
@@ -297,7 +335,6 @@ export const UPDATE_ORDERGROUP = gql`
         childOrderGroups {
           id
         }
-        createdAt
         recurring
         recurrenceFrequency
         recurrenceEndDate
@@ -305,9 +342,9 @@ export const UPDATE_ORDERGROUP = gql`
         parentOrderGroupId
         deliveryOrder {
           deliveryDate
+          status
           dispatchedDate
           driverId
-          vehicleId
           orderGroupId
           lineItems {
             id

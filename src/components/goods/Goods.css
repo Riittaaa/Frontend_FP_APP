@@ -14,6 +14,12 @@
   margin: 0;
 }
 
+.buttons {
+  display: flex;
+  float: right;
+  gap: 20px;
+}
+
 .goods__add-button {
   background-color: #f39c12;
   color: #ffffff;
@@ -21,6 +27,19 @@
   border-radius: 5px;
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.goods__category-button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.goods__category-button:hover {
+  background-color: #005abb;
 }
 
 .goods__add-button:hover {
