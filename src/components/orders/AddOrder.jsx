@@ -19,7 +19,7 @@ function AddOrder() {
   const [customer, setCustomer] = useState("");
   const [customerBranch, setCustomerBranch] = useState("");
   const [goodsList, setGoodsList] = useState([
-    { goods: "", quantity: "", unit: "" },
+    { goods: "", quantity: "", unit: "", destroy: false },
   ]);
   const [recurring, setRecurring] = useState(false);
   const [recurrenceFrequency, setRecurrenceFrequency] = useState(null);
@@ -97,6 +97,11 @@ function AddOrder() {
     setGoodsList([...goodsList, { goods: "", quantity: "", unit: "" }]);
   };
 
+  const handleDeleteGoods = (index) => {
+    const newGoodsList = goodsList.filter((_, i) => i !== index);
+    setGoodsList(newGoodsList);
+  };
+
   const handleCustomerChange = (e) => {
     const selectedCustomer = e.target.value;
     setCustomer(selectedCustomer);
@@ -136,14 +141,14 @@ function AddOrder() {
         },
       });
 
-      if (data.createOrderGroup.errors) {
-        console.log("Error:", data.createOrderGroup.errors);
-      } else {
+      if (data.createOrderGroup.message) {
         console.log(
           "Order created successfully:",
           data.createOrderGroup.message
         );
         navigate("/orderlists");
+      } else {
+        console.log("Error:", data.createOrderGroup.errors);
       }
     } catch (err) {
       console.error("Error adding order group:", err);
@@ -375,8 +380,21 @@ function AddOrder() {
                   )}
                 </select>
               </div>
+
+              {index > 0 && (
+                <div className="order-form__group order-form__group--delete">
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteGoods(index)}
+                    className="order-form__button order__button--delete-goods"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))}
+
           <div className="buttons">
             <button
               type="button"
@@ -386,6 +404,7 @@ function AddOrder() {
               Add Goods
             </button>
           </div>
+
           <hr />
           <div className="order-form__row">
             <div className="order-form__group">
@@ -505,6 +524,10 @@ function AddOrder() {
             </button>
           </div>
         </form>
+
+        <a href="/dashboard" className="add-driver__link">
+          Back to Order Lists
+        </a>
 
         {error && <p className="order-form__error">{error.message}</p>}
       </div>
