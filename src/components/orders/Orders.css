@@ -142,12 +142,25 @@
   opacity: 0.8;
 }
 
+/* .order-form__group--delete {
+  margin-top: 16px;
+  background-color: red;
+  padding-right: 2px;
+} */
+
 .orders__action-button--edit {
   background-color: #4caf50;
 }
 
 .orders__action-button--details {
   background-color: #f39c12;
+}
+
+.order__button--delete-goods {
+  margin-top: 28px;
+
+  background-color: red;
+  padding-right: 2px;
 }
 
 .buttons {
