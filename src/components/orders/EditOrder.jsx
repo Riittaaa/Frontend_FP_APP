@@ -112,7 +112,7 @@ function EditOrder() {
       setCustomer(data.customer.id || "");
       setCustomerBranch(data.customerBranch.id || "");
       setRecurring(data.recurring || false);
-      setRecurrenceFrequency(data.recurrenceFrequency.toUpperCase() || null);
+      setRecurrenceFrequency(data.recurrenceFrequency?.toUpperCase() || null);
       // setNextDueDate(data.nextDueDate || "");
       setRecurrenceEndDate(data.recurrenceEndDate || null);
       setDriver(data.deliveryOrder.driverId || "");
@@ -186,7 +186,7 @@ function EditOrder() {
 
       if (response && response.data.updateOrderGroup.message) {
         console.log(response.data.updateOrderGroup.message);
-        navigate("/orderlists");
+        navigate("/dashboard");
       } else {
         console.log(response.data.updateOrderGroup.error);
       }
