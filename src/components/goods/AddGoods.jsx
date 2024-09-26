@@ -2,14 +2,21 @@ import { useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { CREATE_GOODS } from "../../graphql/mutations";
 import "./Goods.css";
-import { FETCH_AVAILABILITIES, FETCH_CATEGORIES } from "../../graphql/queries";
+import {
+  FETCH_AVAILABILITIES,
+  FETCH_CATEGORIES,
+  FETCH_GOODS,
+} from "../../graphql/queries";
+import { useNavigate } from "react-router-dom";
 
 function AddGoods() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [soldAs, setSoldAs] = useState("");
   const [unit, setUnit] = useState("");
   const [availability, setAvailability] = useState("");
+  const { refetch } = useQuery(FETCH_GOODS);
 
   const {
     data: categories,
@@ -45,6 +52,9 @@ function AddGoods() {
         console.log("Error: " + data.createGoods.errors);
       } else {
         console.log(data.createGoods.message);
+        await refetch();
+
+        navigate("/goods");
       }
     } catch (err) {
       console.error("Error adding product:", err);
