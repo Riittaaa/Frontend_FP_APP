@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import logo from "../images/logo.png";
 import "../css/Navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -29,6 +30,7 @@ function Navbar() {
     localStorage.removeItem("token");
     dispatch(logout());
     setIsLoggedIn(false);
+    navigate("/login");
   };
 
   return (
