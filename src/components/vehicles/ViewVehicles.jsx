@@ -64,7 +64,7 @@ function ViewVehicles() {
         </button>
         <button
           className="delete-button"
-          onClick={() => handleDelete(params.data.id)} // Ensure params.data.id is correct
+          onClick={() => handleDelete(params.data.id)}
         >
           Delete
         </button>
@@ -73,15 +73,17 @@ function ViewVehicles() {
   };
 
   const [colDefs, setColDefs] = useState([
-    { field: "id", headerName: "Id", flex: 1, sortable: true },
-    { field: "brand", headerName: "Brand", flex: 1, sortable: true },
-    { field: "capacity", headerName: "Capacity", flex: 1, sortable: true },
+    { field: "id", headerName: "Id", flex: 1, sortable: true, hide: true },
     {
       field: "licensePlate",
       headerName: "License Plate",
       flex: 1,
       sortable: true,
     },
+    { field: "brand", headerName: "Brand", flex: 1, sortable: true },
+    { field: "capacity", headerName: "Capacity", flex: 1, sortable: true },
+    { field: "vehicleType", headerName: "Type", flex: 1, sortable: true },
+
     { field: "status", headerName: "Status", flex: 1, sortable: true },
     {
       headerName: "Actions",
