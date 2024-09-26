@@ -180,6 +180,15 @@ function OrderLists() {
               />
             </div>
             <div className="order-details-group">
+              <label className="order-form__label">Status</label>
+              <input
+                type="text"
+                value={modalData.deliveryOrder.status}
+                className="order-form__input"
+                readOnly
+              />
+            </div>
+            <div className="order-details-group">
               <label className="order-form__label">Planned at</label>
               <input
                 type="text"
@@ -190,8 +199,27 @@ function OrderLists() {
             </div>
           </div>
 
+          {modalData.parentOrderGroupId && (
+            <>
+              <h4>Parent Order</h4>
+              <div className="table-container">
+                <table className="parent-details-table">
+                  <thead>
+                    <tr>
+                      <th>Parent Order ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{modalData.parentOrderGroupId}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+
           <div className="table-container">
-            {/* <h4>Customer Details</h4> */}
             <table className="customer-details-table">
               <thead>
                 <tr>
@@ -222,8 +250,7 @@ function OrderLists() {
               </tbody>
             </table>
 
-            {/* <h4>Delivery Order Details</h4> */}
-            <table className="customer-details-table">
+            <table className="drivers-details-table">
               <thead>
                 <tr>
                   <th>Driver</th>
@@ -232,20 +259,18 @@ function OrderLists() {
               </thead>
               <tbody>
                 <tr>
-                  <td> {modalData.deliveryOrder.driverId}</td>
+                  <td>{modalData.deliveryOrder.driverId}</td>
                   <td>{modalData.deliveryOrder.vehicleId}</td>
                 </tr>
               </tbody>
             </table>
-            {/* <p>Driver ID: {modalData.deliveryOrder.driverId}</p>
-          <p>Vehicle ID: {modalData.deliveryOrder.vehicleId}</p> */}
           </div>
 
           {modalData.recurring && (
             <>
               <h4>Recurring Details</h4>
               <div className="table-container">
-                <table className="customer-details-table">
+                <table className="recurring-details-table">
                   <thead>
                     <tr>
                       <th>Recurrence Frequency</th>
@@ -260,10 +285,31 @@ function OrderLists() {
                   </tbody>
                 </table>
               </div>
-              {/* <p>Frequency: {modalData.recurrenceFrequency}</p>
-              <p>End Date: {modalData.recurrenceEndDate}</p> */}
             </>
           )}
+
+          {modalData.childOrderGroups &&
+            modalData.childOrderGroups.length > 0 && (
+              <>
+                <h4>Child Orders</h4>
+                <div className="table-container">
+                  <table className="child-orders-table">
+                    <thead>
+                      <tr>
+                        <th>Child Order ID</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {modalData.childOrderGroups.map((childOrder) => (
+                        <tr key={childOrder.id}>
+                          <td>{childOrder.id}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
 
           <h4>Line Items</h4>
           <div className="table-container">
