@@ -234,6 +234,7 @@ export const FETCH_ORDERGROUPS = gql`
           deliveryDate
           dispatchedDate
           driverId
+          status
           vehicleId
           orderGroupId
           lineItems {

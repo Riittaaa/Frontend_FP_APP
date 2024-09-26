@@ -23,7 +23,7 @@ function EditOrder() {
   const [customer, setCustomer] = useState("");
   const [customerBranch, setCustomerBranch] = useState("");
   const [goodsList, setGoodsList] = useState([
-    { id: "", goods: "", quantity: "", unit: "" },
+    { id: "", goods: "", quantity: "", unit: "", destroy: false },
   ]);
   const [recurring, setRecurring] = useState(false);
   const [recurrenceFrequency, setRecurrenceFrequency] = useState(null);
@@ -98,12 +98,12 @@ function EditOrder() {
       id: orderId,
     },
   });
+  // console.log(orderGroupData);
 
   const [
     updateOrderGroup,
     { loading: updateGroupLoading, error: updateOrderGroupError },
   ] = useMutation(UPDATE_ORDERGROUP);
-  // console.log(orderGroupData);
 
   useEffect(() => {
     if (orderGroupData && orderGroupData.specificOrderGroup) {
@@ -126,15 +126,21 @@ function EditOrder() {
           goods: item.goodsId,
           quantity: item.quantity,
           unit: item.unit,
+          destroy: item.destroy,
         }))
       );
     }
   }, [orderGroupData]);
 
   const handleGoodsChange = (index, event) => {
-    const { name, value } = event.target;
+    const { name, value, type, checked } = event.target;
     const newGoodsList = [...goodsList];
-    newGoodsList[index][name] = value;
+    if (type === "checkbox") {
+      newGoodsList[index].destroy = checked;
+    } else {
+      newGoodsList[index][name] = value;
+    }
+
     setGoodsList(newGoodsList);
   };
 
@@ -177,12 +183,15 @@ function EditOrder() {
                   goodsId: parseInt(item.goods),
                   quantity: parseInt(item.quantity),
                   unit: item.unit,
+                  destroy: item.destroy,
                 })),
               },
             },
           },
         },
       });
+
+      console.log(response);
 
       if (response && response.data.updateOrderGroup.message) {
         console.log(response.data.updateOrderGroup.message);
@@ -358,14 +367,6 @@ function EditOrder() {
 
           {goodsList.map((goodsItem, index) => (
             <div key={index} className="order-form__row">
-              {/* <p>{goodsItem.lineItemId}</p> */}
-              {/* <div className="order-form__group">
-                <label htmlFor="goods" className="order-form__label">
-                  Line Item Id
-                </label>
-                <input type="text" value={goodsItem.lineItemId} />
-              </div> */}
-
               <div className="order-form__group">
                 <label htmlFor="goods" className="order-form__label">
                   Select Goods
@@ -434,8 +435,36 @@ function EditOrder() {
                   )}
                 </select>
               </div>
+
+              {index > 0 && (
+                <div className="order-form__group">
+                  <label htmlFor="unit" className="order-form__label">
+                    Destroy
+                  </label>
+                  <input
+                    type="checkbox"
+                    checked={goodsItem.destroy}
+                    onChange={(e) => handleGoodsChange(index, e)}
+                    className="order-form__button order__button--delete-goods"
+                  />
+                </div>
+              )}
             </div>
           ))}
+
+          {/* {index > 0 && (
+                <div className="order-form__group">
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteGoods(index)}
+                    className="order-form__button order__button--delete-goods"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+          ))} */}
 
           <div className="buttons">
             <button
@@ -443,9 +472,10 @@ function EditOrder() {
               onClick={handleAddGoods}
               className="order-form__button order-form__button--add-goods"
             >
-              + Add Goods
+              Add Goods
             </button>
           </div>
+          <hr />
 
           <div className="order-form__row">
             <div className="order-form__group">
@@ -570,6 +600,10 @@ function EditOrder() {
             </button>
           </div>
         </form>
+
+        <a href="/dashboard" className="add-driver__link">
+          Back to Order Lists
+        </a>
 
         {updateOrderGroupError && (
           <p className="add-orders__error">{updateOrderGroupError.message}</p>

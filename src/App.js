@@ -30,7 +30,6 @@ import EditBranch from "./components/customer_branches/EditBranch";
 import ViewDrivers from "./components/drivers/ViewDrivers";
 import AddDriver from "./components/drivers/AddDriver";
 import EditDriver from "./components/drivers/EditDriver";
-import Dashboard from "./components/Dashboard";
 import OrderLists from "./components/orders/OrderLists";
 import AddOrder from "./components/orders/AddOrder";
 import EditOrder from "./components/orders/EditOrder";

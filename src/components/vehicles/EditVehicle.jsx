@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Vehicles.css";
 import { useQuery, useMutation } from "@apollo/client";
-import { FETCH_VEHICLE, FETCH_STATUSES } from "../../graphql/queries";
+import {
+  FETCH_VEHICLES,
+  FETCH_VEHICLE,
+  FETCH_STATUSES,
+} from "../../graphql/queries";
 import { UPDATE_VEHICLE } from "../../graphql/mutations";
 
 function EditVehicle() {
@@ -14,8 +18,10 @@ function EditVehicle() {
   const [capacity, setCapacity] = useState("");
   const [status, setStatus] = useState("");
 
+  const { refetch } = useQuery(FETCH_VEHICLES);
+
   const { loading, error, data } = useQuery(FETCH_VEHICLE, {
-    variables: { vehicleId: vehicleId },
+    variables: { vehicleId },
   });
   const {
     data: statusData,
@@ -60,6 +66,7 @@ function EditVehicle() {
       });
 
       if (response && response.data.updateVehicle.message) {
+        await refetch();
         console.log(response.data.updateVehicle.message);
         navigate("/vehicles");
       } else {

@@ -41,7 +41,7 @@ function EditCustomer() {
               name,
               email,
               address,
-              phone: parseInt(phone),
+              phone,
             },
           },
         },

@@ -31,7 +31,7 @@ function AddDriver() {
               name,
               email,
               address,
-              phoneNo: parseInt(phoneNo),
+              phoneNo,
               status,
             },
           },
