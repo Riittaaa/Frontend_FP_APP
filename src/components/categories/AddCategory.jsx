@@ -3,6 +3,7 @@ import { FETCH_CATEGORIES } from "../../graphql/queries";
 import { useNavigate } from "react-router-dom";
 import { CREATE_CATEGORY } from "../../graphql/mutations";
 import { useMutation, useQuery } from "@apollo/client";
+import { toast } from "react-toastify";
 import "./Categories.css";
 
 function AddCategory() {
@@ -28,13 +29,13 @@ function AddCategory() {
 
       if (data.createCategory.message) {
         await refetch();
-        console.log(data.createCategory.message);
         navigate("/categories");
+        toast.success("Category created successfully!!");
       } else {
-        console.log("Error:" + data.createCategory.errors);
+        toast.error("Error:" + data.createCategory.errors);
       }
     } catch (err) {
-      console.error("Error adding category:", err);
+      toast.error("Error adding category:", err);
     }
   };
 

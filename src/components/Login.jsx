@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { loginSuccess, loginFailure } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
@@ -85,15 +86,15 @@ function Login() {
             })
           );
           localStorage.setItem("token", data.loginUser.token);
-          console.log(data.loginUser.message);
           navigate("/dashboard");
+          toast.success("Logged in successfully!!");
         } else {
           dispatch(loginFailure(data.loginUser.error));
-          console.error("Login failed:", data.loginUser.error);
+          toast.error("Login failed:", data.loginUser.error);
         }
       } catch (err) {
         dispatch(loginFailure(err.message));
-        console.error("Error:", err.message);
+        toast.error("Error:", err.message);
       }
     }
   };

@@ -6,6 +6,7 @@ import { FETCH_CATEGORIES } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { DELETE_CATEGORY } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 import "./Categories.css";
 
 function ViewCategories() {
@@ -40,12 +41,12 @@ function ViewCategories() {
           setRowData((prevData) =>
             prevData.filter((category) => category.id !== categoryId)
           );
-          console.log(response.data.deleteCategory.message);
+          toast.success("Category deleted successfully!!");
         } else {
-          console.log("Error", response.data.deleteCategory.errors);
+          toast.error("Error", response.data.deleteCategory.errors);
         }
       } catch (err) {
-        console.error("Error deleting category:", err);
+        toast.error("Error deleting category:", err);
       }
     }
   };

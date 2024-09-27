@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CREATE_BRANCH } from "../../graphql/mutations";
 import { FETCH_BRANCHES } from "../../graphql/queries";
+import { toast } from "react-toastify";
 
 function AddBranch() {
   const navigate = useNavigate();
@@ -34,14 +35,14 @@ function AddBranch() {
       });
 
       if (data.errors) {
-        console.log("Error:" + data.addCustomerbranch.errors);
+        toast.error("Error:" + data.addCustomerbranch.errors);
       } else {
         await refetch();
-        console.log(data.addCustomerbranch.message);
+        toast.success("Customer branch added successfully!!");
         navigate(`/customers/${customerId}/branches`);
       }
     } catch (err) {
-      console.error("Error adding customer branch:", err);
+      toast.error("Error adding customer branch:", err);
     }
   };
 

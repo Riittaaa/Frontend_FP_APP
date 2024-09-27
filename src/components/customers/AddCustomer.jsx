@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { CREATE_CUSTOMER } from "../../graphql/mutations";
 import { useNavigate } from "react-router-dom";
 import { FETCH_CUSTOMERS } from "../../graphql/queries";
+import { toast } from "react-toastify";
 
 function AddCustomer() {
   const navigate = useNavigate();
@@ -33,13 +34,13 @@ function AddCustomer() {
 
       if (data.createCustomer.message) {
         await refetch();
-        console.log(data.createCustomer.message);
+        toast.success("Customer created succcessfully!!");
         navigate("/customers");
       } else {
-        console.log("Error:" + data.createCustomer.errors[0]);
+        toast.error("Error:" + data.createCustomer.errors[0]);
       }
     } catch (err) {
-      console.error("Error adding customer:", err);
+      toast.error("Error adding customer:", err);
     }
   };
   return (

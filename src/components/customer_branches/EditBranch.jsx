@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FETCH_BRANCH } from "../../graphql/queries";
 import { UPDATE_BRANCH } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function EditBranch() {
   const url = window.location.href;
@@ -46,13 +47,13 @@ function EditBranch() {
 
       if (response && response.data.updateCustomerbranch.message) {
         await refetch();
-        console.log(response.data.updateCustomerbranch.message);
+        toast.success("Customer branch updated successfully!!");
         navigate(`/customers/${customerId}/branches`);
       } else {
-        console.log(response.data.updateCustomerbranch.errors);
+        toast.error(response.data.updateCustomerbranch.errors);
       }
     } catch (error) {
-      console.error("Error updating branch:", error);
+      toast.error("Error updating branch:", error);
     }
   };
 

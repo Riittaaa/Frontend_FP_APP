@@ -36,6 +36,8 @@ import EditOrder from "./components/orders/EditOrder";
 import ViewCategories from "./components/categories/ViewCategories";
 import AddCategory from "./components/categories/AddCategory";
 import EditCategory from "./components/categories/EditCategory";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -48,6 +50,12 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
+        <ToastContainer
+          toastStyle={{
+            backgroundColor: "#212529",
+          }}
+        />
+
         <Router>
           <Navbar />
           <Routes>
@@ -58,7 +66,7 @@ function App() {
             />
             <Route
               path="/login"
-              element={token ? <Navigate to="/dashboard" replace /> : <Login />}
+              element={token ? <Navigate to="/dashboard" /> : <Login />}
             />
 
             <Route
@@ -138,10 +146,6 @@ function App() {
               element={<ProtectedRoute element={<EditDriver />} />}
             />
 
-            {/* <Route
-              path="/orderlists"
-              element={<ProtectedRoute element={<OrderLists />} />}
-            /> */}
             <Route
               path="/addOrder"
               element={<ProtectedRoute element={<AddOrder />} />}

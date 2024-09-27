@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { FETCH_VEHICLES } from "../../graphql/queries";
 import { DELETE_VEHICLE } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function ViewVehicles() {
   const navigate = useNavigate();
@@ -43,12 +44,12 @@ function ViewVehicles() {
           setRowData((prevData) =>
             prevData.filter((vehicle) => vehicle.id !== vehicleId)
           );
-          console.log(response.data.deleteVehicle.message);
+          toast.success("Vehicle deleted successfully!!");
         } else {
-          console.log("Error", response.data.deleteVehicle.errors);
+          toast.error("Error", response.data.deleteVehicle.errors);
         }
       } catch (err) {
-        console.error("Error deleting vehicle:", err);
+        toast.error("Error deleting vehicle:", err);
       }
     }
   };
@@ -80,18 +81,42 @@ function ViewVehicles() {
       flex: 1,
       sortable: true,
     },
-    { field: "brand", headerName: "Brand", flex: 1, sortable: true },
-    { field: "capacity", headerName: "Capacity", flex: 1, sortable: true },
-    { field: "vehicleType", headerName: "Type", flex: 1, sortable: true },
+    {
+      field: "brand",
+      headerName: "Brand",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
+    {
+      field: "capacity",
+      headerName: "Capacity",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
+    {
+      field: "vehicleType",
+      headerName: "Type",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
 
-    { field: "status", headerName: "Status", flex: 1, sortable: true },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
     {
       headerName: "Actions",
       field: "actions",
       cellRenderer: ActionCellRenderer,
       filter: false,
       sortable: false,
-      width: 150,
+      minWidth: 150,
     },
   ]);
 

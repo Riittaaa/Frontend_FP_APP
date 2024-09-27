@@ -14,6 +14,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_ORDERGROUP } from "../../graphql/mutations";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function EditOrder() {
   const navigate = useNavigate();
@@ -191,16 +192,15 @@ function EditOrder() {
         },
       });
 
-      console.log(response);
 
       if (response && response.data.updateOrderGroup.message) {
-        console.log(response.data.updateOrderGroup.message);
+        toast.success("Order updated successfully!!");
         navigate("/dashboard");
       } else {
-        console.log(response.data.updateOrderGroup.error);
+        toast.error(response.data.updateOrderGroup.error);
       }
     } catch (error) {
-      console.error("Error updating order:", error);
+      toast.error("Error updating order:", error);
     }
   };
 

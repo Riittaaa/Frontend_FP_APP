@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import logo from "../images/logo.png";
 import "../css/Navbar.css";
+import { toast } from "react-toastify";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function Navbar() {
     dispatch(logout());
     setIsLoggedIn(false);
     navigate("/login");
+    toast.success("Logged out successfully!!");
   };
 
   return (

@@ -7,6 +7,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Goods.css";
 import { useNavigate } from "react-router-dom";
 import { DELETE_GOODS } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function ViewGoods() {
   const navigate = useNavigate();
@@ -39,12 +40,12 @@ function ViewGoods() {
           setRowData((prevData) =>
             prevData.filter((goods) => goods.id !== goodsId)
           );
-          console.log(response.data.deleteGoods.message);
+          toast.success("Goods deleted successfully!!");
         } else {
-          console.log("Error", response.data.deleteGoods.errors);
+          toast.error("Error", response.data.deleteGoods.errors);
         }
       } catch (err) {
-        console.error("Error deleting goods:", err);
+        toast.error("Error deleting goods:", err);
       }
     }
   };
@@ -76,18 +77,48 @@ function ViewGoods() {
       sort: "asc",
       hide: true,
     },
-    { field: "name", headerName: "Product Name", flex: 1, sortable: true },
-    { field: "soldAs", headerName: "Sold As", flex: 1, sortable: true },
-    { field: "unit", headerName: "Unit", flex: 1, sortable: true },
-    { field: "category.name", headerName: "Category", flex: 1, sortable: true },
-    { field: "availability", headerName: "Available", flex: 1, sortable: true },
+    {
+      field: "name",
+      headerName: "Product Name",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
+    {
+      field: "soldAs",
+      headerName: "Sold As",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
+    {
+      field: "unit",
+      headerName: "Unit",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
+    {
+      field: "category.name",
+      headerName: "Category",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
+    {
+      field: "availability",
+      headerName: "Available",
+      flex: 1,
+      sortable: true,
+      minWidth: 150,
+    },
     {
       headerName: "Actions",
       field: "actions",
       cellRenderer: ActionCellRenderer,
       filter: false,
       sortable: false,
-      width: 150,
+      minWidth: 200,
     },
   ]);
 

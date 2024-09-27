@@ -12,6 +12,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_ORDERGROUP } from "../../graphql/mutations";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AddOrder() {
   const navigate = useNavigate();
@@ -142,16 +143,13 @@ function AddOrder() {
       });
 
       if (data.createOrderGroup.message) {
-        console.log(
-          "Order created successfully:",
-          data.createOrderGroup.message
-        );
-        navigate("/orderlists");
+        toast.success("Order created successfully!!");
+        navigate("/dashboard");
       } else {
-        console.log("Error:", data.createOrderGroup.errors);
+        toast.error("Error:", data.createOrderGroup.errors);
       }
     } catch (err) {
-      console.error("Error adding order group:", err);
+      toast.error("Error adding order group:", err);
     }
   };
 

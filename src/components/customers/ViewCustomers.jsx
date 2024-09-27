@@ -7,6 +7,7 @@ import { FETCH_CUSTOMERS, EXPORT_CSV } from "../../graphql/queries";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import "./Customers.css";
 import { DELETE_CUSTOMER } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function ViewCustomers() {
   const navigate = useNavigate();
@@ -40,12 +41,12 @@ function ViewCustomers() {
           setRowData((prevData) =>
             prevData.filter((customer) => customer.id !== customerId)
           );
-          console.log(response.data.deleteCustomer.message);
+          toast.success("Customer deleted successfully!!");
         } else {
-          console.log("Error", response.data.deleteCustomer.errors);
+          toast.error("Error", response.data.deleteCustomer.errors);
         }
       } catch (err) {
-        console.error("Error deleting customer:", err);
+        toast.error("Error deleting customer:", err);
       }
     }
   };
@@ -56,11 +57,11 @@ function ViewCustomers() {
       const csvUrl = response.data.csvExport;
 
       window.open(
-        `https://b89d-2400-1a00-b060-748f-5ece-3a95-272a-7a49.ngrok-free.app${csvUrl}`,
+        `https://35bd-110-44-126-21.ngrok-free.app${csvUrl}`,
         "_blank"
       );
     } catch (error) {
-      console.error("Error exporting CSV:", error);
+      toast.error("Error exporting CSV:", error);
     }
   };
 
@@ -127,7 +128,7 @@ function ViewCustomers() {
       cellRenderer: ActionCellRenderer,
       filter: false,
       sortable: false,
-      minWidth: 150,
+      minWidth: 250,
     },
   ]);
 
@@ -167,7 +168,13 @@ function ViewCustomers() {
           defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={10}
-          onRowClicked={handleRowClick}
+          onRowClicked={(row) => {
+            if (row.event.target.tagName === "BUTTON") {
+              return;
+            } else {
+              handleRowClick(row);
+            }
+          }}
         />
       </div>
     </div>

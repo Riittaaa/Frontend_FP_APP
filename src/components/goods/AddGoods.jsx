@@ -8,6 +8,7 @@ import {
   FETCH_GOODS,
 } from "../../graphql/queries";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AddGoods() {
   const navigate = useNavigate();
@@ -49,15 +50,14 @@ function AddGoods() {
       });
 
       if (data.errors) {
-        console.log("Error: " + data.createGoods.errors);
+        toast.error("Error: " + data.createGoods.errors);
       } else {
-        console.log(data.createGoods.message);
+        toast.success("Goods created successfully!!");
         await refetch();
-
         navigate("/goods");
       }
     } catch (err) {
-      console.error("Error adding product:", err);
+      toast.error("Error adding goods:", err);
     }
   };
 

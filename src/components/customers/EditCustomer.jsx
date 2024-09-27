@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FETCH_CUSTOMER, FETCH_CUSTOMERS } from "../../graphql/queries";
 import { UPDATE_CUSTOMER } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function EditCustomer() {
   const navigate = useNavigate();
@@ -49,13 +50,13 @@ function EditCustomer() {
 
       if (response && response.data.updateCustomer.message) {
         await refetch();
-        console.log(response.data.updateCustomer.message);
+        toast.success("Customer updated successfully!!");
         navigate("/customers");
       } else {
-        console.log(response.data.updateCustomer.error);
+        toast.error(response.data.updateCustomer.errors[0]);
       }
     } catch (error) {
-      console.error("Error updating customer:", error);
+      toast.error("Error updating customer:", error);
     }
   };
 

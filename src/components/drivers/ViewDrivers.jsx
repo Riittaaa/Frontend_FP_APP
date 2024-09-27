@@ -7,6 +7,7 @@ import { FETCH_DRIVERS } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import "./Drivers.css";
 import { DELETE_DRIVER } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function ViewDrivers() {
   const navigate = useNavigate();
@@ -43,12 +44,12 @@ function ViewDrivers() {
           setRowData((prevData) =>
             prevData.filter((driver) => driver.id !== driverId)
           );
-          console.log(response.data.deleteDriver.message);
+          toast.success("Driver deleted successfully!!");
         } else {
-          console.log("Error", response.data.deleteDriver.errors);
+          toast.error("Error", response.data.deleteDriver.errors);
         }
       } catch (err) {
-        console.error("Error deleting driver:", err);
+        toast.error("Error deleting driver:", err);
       }
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -60,7 +60,7 @@ function OrderLists() {
 
         <button
           className="orders__action-button orders__action-button--details"
-          onClick={() => handleDetails(params.data.order)} // Pass entire order object
+          onClick={() => handleDetails(params.data.order)}
         >
           Details
         </button>
@@ -84,6 +84,14 @@ function OrderLists() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const defaultColDef = useMemo(() => {
+    return {
+      flex: 1,
+      filter: true,
+      sortable: true,
+    };
+  }, []);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading orders: {error.message}</p>;
@@ -145,7 +153,7 @@ function OrderLists() {
               minWidth: 150,
             },
           ]}
-          defaultColDef={{ flex: 1, filter: true, sortable: true }}
+          defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={10}
         />

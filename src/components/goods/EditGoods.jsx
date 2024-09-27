@@ -8,6 +8,7 @@ import {
 } from "../../graphql/queries";
 import { UPDATE_GOODS } from "../../graphql/mutations";
 import "./Goods.css";
+import { toast } from "react-toastify";
 
 function EditGoods() {
   const navigate = useNavigate();
@@ -37,8 +38,6 @@ function EditGoods() {
   useEffect(() => {
     if (data && data.specificGoods && data.specificGoods.goods.length > 0) {
       const goods = data.specificGoods.goods[0];
-      // console.log(goods.category.name);
-      // console.log(goods.availability);
       setName(goods.name || "");
       setCategory(goods.category.id || "");
       setSoldAs(goods.soldAs || "");
@@ -69,13 +68,13 @@ function EditGoods() {
       });
 
       if (response && response.data.updateGoods.message) {
-        console.log(response.data.updateGoods.message);
+        toast.success("Goods updated successfully!!");
         navigate("/goods");
       } else {
-        console.log("Error", response.data.updateGoods.error);
+        toast.error("Error", response.data.updateGoods.error);
       }
     } catch (error) {
-      console.error("Error updating goods:", error);
+      toast.error("Error updating goods:", error);
     }
   };
 

@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FETCH_BRANCHES } from "../../graphql/queries";
 import { useNavigate, useParams } from "react-router-dom";
 import { DELETE_BRANCH } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function ViewBranches() {
   const { customerId } = useParams();
@@ -47,12 +48,12 @@ function ViewBranches() {
               (customerbranch) => customerbranch.id !== customerbranchId
             )
           );
-          console.log(response.data.deleteCustomerbranch.message);
+          toast.success("Customer branch deleted successfully!!");
         } else {
-          console.log("Error", response.data.deleteCustomerbranch.errors);
+          toast.error("Error", response.data.deleteCustomerbranch.errors);
         }
       } catch (err) {
-        console.error("Error deleting branch:", err);
+        toast.error("Error deleting branch:", err);
       }
     }
   };

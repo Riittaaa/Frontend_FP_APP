@@ -8,6 +8,7 @@ import {
   FETCH_STATUSES,
 } from "../../graphql/queries";
 import { UPDATE_VEHICLE } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function EditVehicle() {
   const navigate = useNavigate();
@@ -67,13 +68,13 @@ function EditVehicle() {
 
       if (response && response.data.updateVehicle.message) {
         await refetch();
-        console.log(response.data.updateVehicle.message);
+        toast.success("Vehicle updated successfully!!");
         navigate("/vehicles");
       } else {
-        console.log(response.data.updateVehicle.error);
+        toast.error(response.data.updateVehicle.error);
       }
     } catch (error) {
-      console.error("Error updating vehicle:", error);
+      toast.error("Error updating vehicle:", error);
     }
   };
 

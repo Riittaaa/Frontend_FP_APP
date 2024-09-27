@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { CREATE_DRIVER } from "../../graphql/mutations";
 import "./Drivers.css";
 import { FETCH_DRIVER_STATUSES } from "../../graphql/queries";
+import { toast } from "react-toastify";
 
 function AddDriver() {
   const navigate = useNavigate();
@@ -39,13 +40,13 @@ function AddDriver() {
       });
 
       if (data.error) {
-        console.log("Error: " + data.addDriver.error);
+        toast.error("Error: " + data.addDriver.error);
       } else {
-        console.log(data.addDriver.message);
+        toast.success("Driver created successfully!!");
         navigate("/drivers");
       }
     } catch (err) {
-      console.error("Error adding driver:", err);
+      toast.error("Error adding driver:", err);
     }
   };
 

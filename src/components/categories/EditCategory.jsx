@@ -3,6 +3,7 @@ import { FETCH_CATEGORIES, FETCH_CATEGORY } from "../../graphql/queries";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_CATEGORY } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 import "./Categories.css";
 
 function EditCategory() {
@@ -17,8 +18,6 @@ function EditCategory() {
       input: categoryId,
     },
   });
-  console.log(data);
-  // console.log(data.specificCategory.category.name);
 
   useEffect(() => {
     if (data && data.specificCategory && data.specificCategory.category) {
@@ -45,13 +44,15 @@ function EditCategory() {
 
       if (response && response.data.updateCategory.message) {
         await refetch();
-        console.log(response.data.updateCategory.message);
+        toast.success("Category updated successfully!!");
+        // console.log(response.data.updateCategory.message);
         navigate("/categories");
       } else {
-        console.log(response.data.updateCategory.errors);
+        toast.error(response.data.updateCategory.errors);
+        // console.log(response.data.updateCategory.errors);
       }
     } catch (error) {
-      console.error("Error updating category:", error);
+      toast.error("Error updating category:", error);
     }
   };
 

@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_VEHICLE } from "../../graphql/mutations";
 import { FETCH_STATUSES } from "../../graphql/queries";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AddVehicle() {
   const navigate = useNavigate();
@@ -38,13 +39,13 @@ function AddVehicle() {
         },
       });
       if (data.errors) {
-        console.log("Error: " + data.createVehicle.errors);
+        toast.error("Error: " + data.createVehicle.errors);
       } else {
-        console.log(data.createVehicle.message);
+        toast.success("Vehicle created successfully!!");
         navigate("/vehicles");
       }
     } catch (err) {
-      console.error("Error adding vehicle:", err);
+      toast.error("Error adding vehicle:", err);
     }
   };
 

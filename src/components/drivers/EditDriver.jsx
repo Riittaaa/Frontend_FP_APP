@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Drivers.css";
 import { FETCH_DRIVER, FETCH_DRIVER_STATUSES } from "../../graphql/queries";
 import { UPDATE_DRIVER } from "../../graphql/mutations";
+import { toast } from "react-toastify";
 
 function EditDriver() {
   const navigate = useNavigate();
@@ -58,13 +59,13 @@ function EditDriver() {
       });
 
       if (data.error) {
-        console.log("Error: " + data.updateDriver.error);
+        toast.error("Error: " + data.updateDriver.error);
       } else {
-        console.log(data.updateDriver.message);
+        toast.success("Driver updated successfully!!");
         navigate("/drivers");
       }
     } catch (err) {
-      console.error("Error updating driver:", err);
+      toast.error("Error updating driver:", err);
     }
   };
 
