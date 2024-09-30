@@ -27,7 +27,7 @@ function AddCategory() {
         },
       });
 
-      if (data.createCategory.message) {
+      if (data.createCategory.category) {
         await refetch();
         navigate("/categories");
         toast.success("Category created successfully!!");
