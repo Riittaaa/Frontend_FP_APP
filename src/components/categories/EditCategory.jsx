@@ -42,14 +42,12 @@ function EditCategory() {
         },
       });
 
-      if (response && response.data.updateCategory.message) {
+      if (response && response.data.updateCategory.category) {
         await refetch();
-        toast.success("Category updated successfully!!");
-        // console.log(response.data.updateCategory.message);
         navigate("/categories");
+        toast.success("Category updated successfully!!");
       } else {
-        toast.error(response.data.updateCategory.errors);
-        // console.log(response.data.updateCategory.errors);
+        toast.error("Error:" + response.data.updateCategory.errors);
       }
     } catch (error) {
       toast.error("Error updating category:", error);

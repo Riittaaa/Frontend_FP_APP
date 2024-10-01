@@ -43,7 +43,7 @@ function ViewCategories() {
           );
           toast.success("Category deleted successfully!!");
         } else {
-          toast.error("Error", response.data.deleteCategory.errors);
+          toast.error("Error" + response.data.deleteCategory.errors);
         }
       } catch (err) {
         toast.error("Error deleting category:", err);
