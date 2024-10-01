@@ -148,6 +148,7 @@ export const FETCH_DRIVERS = gql`
       groupId
       phoneNo
       status
+      deletedAt
     }
   }
 `;
@@ -213,7 +214,6 @@ export const FETCH_ORDERGROUPS = gql`
           id
           name
           email
-          address
           phone
         }
         customerBranch {
@@ -228,18 +228,32 @@ export const FETCH_ORDERGROUPS = gql`
         recurring
         recurrenceFrequency
         recurrenceEndDate
-        nextDueDate
         parentOrderGroupId
         deliveryOrder {
           deliveryDate
           dispatchedDate
-          driverId
+          driver {
+            id
+            name
+          }
+          vehicle {
+            id
+            brand
+            vehicleType
+          }
           status
-          vehicleId
           orderGroupId
           lineItems {
             id
-            goodsId
+            goods {
+              id
+              name
+              availability
+              category {
+                id
+                name
+              }
+            }
             quantity
             unit
           }
@@ -284,13 +298,28 @@ export const FETCH_ORDERGROUP = gql`
         deliveryOrder {
           deliveryDate
           dispatchedDate
-          driverId
-          vehicleId
+          driver {
+            id
+            name
+          }
+          vehicle {
+            id
+            brand
+            vehicleType
+          }
           status
           orderGroupId
           lineItems {
             id
-            goodsId
+            goods {
+              id
+              name
+              availability
+              category {
+                id
+                name
+              }
+            }
             quantity
             unit
           }

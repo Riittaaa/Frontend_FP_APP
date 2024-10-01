@@ -287,6 +287,8 @@ export const CREATE_ORDERGROUP = gql`
         customer {
           id
           name
+          email
+          phone
         }
         customerBranch {
           id
@@ -295,19 +297,37 @@ export const CREATE_ORDERGROUP = gql`
         childOrderGroups {
           id
         }
-        parentOrderGroupId
         createdAt
+        plannedAt
         recurring
         recurrenceFrequency
         recurrenceEndDate
-        nextDueDate
+        parentOrderGroupId
         deliveryOrder {
+          deliveryDate
+          dispatchedDate
+          driver {
+            id
+            name
+          }
+          vehicle {
+            id
+            brand
+            vehicleType
+          }
           status
-          driverId
           orderGroupId
           lineItems {
             id
-            goodsId
+            goods {
+              id
+              name
+              availability
+              category {
+                id
+                name
+              }
+            }
             quantity
             unit
           }
@@ -327,6 +347,8 @@ export const UPDATE_ORDERGROUP = gql`
         customer {
           id
           name
+          email
+          phone
         }
         customerBranch {
           id
@@ -335,20 +357,37 @@ export const UPDATE_ORDERGROUP = gql`
         childOrderGroups {
           id
         }
+        createdAt
+        plannedAt
         recurring
         recurrenceFrequency
         recurrenceEndDate
-        nextDueDate
         parentOrderGroupId
         deliveryOrder {
           deliveryDate
-          status
           dispatchedDate
-          driverId
+          driver {
+            id
+            name
+          }
+          vehicle {
+            id
+            brand
+            vehicleType
+          }
+          status
           orderGroupId
           lineItems {
             id
-            goodsId
+            goods {
+              id
+              name
+              availability
+              category {
+                id
+                name
+              }
+            }
             quantity
             unit
           }

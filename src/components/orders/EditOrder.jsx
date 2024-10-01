@@ -116,15 +116,15 @@ function EditOrder() {
       setRecurrenceFrequency(data.recurrenceFrequency?.toUpperCase() || null);
       // setNextDueDate(data.nextDueDate || "");
       setRecurrenceEndDate(data.recurrenceEndDate || null);
-      setDriver(data.deliveryOrder.driverId || "");
-      setVehicle(data.deliveryOrder.vehicleId || "");
+      setDriver(data.deliveryOrder.driver.id || "");
+      setVehicle(data.deliveryOrder.vehicle.id || "");
       setStatus(data.deliveryOrder.status || "");
       // setDispatchedDate(data.deliveryOrder.dispatchedDate || "");
       // setDeliveryDate(data.deliveryOrder.deliveryDate || "");
       setGoodsList(
         data.deliveryOrder.lineItems.map((item) => ({
           id: item.id,
-          goods: item.goodsId,
+          goods: item.goods.id,
           quantity: item.quantity,
           unit: item.unit,
           destroy: item.destroy,
@@ -191,7 +191,6 @@ function EditOrder() {
           },
         },
       });
-
 
       if (response && response.data.updateOrderGroup.message) {
         toast.success("Order updated successfully!!");

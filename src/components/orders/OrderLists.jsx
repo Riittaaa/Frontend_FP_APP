@@ -36,8 +36,14 @@ function OrderLists() {
     },
     deliveryOrder: {
       lineItems: [],
-      driverId: "",
-      vehicleId: "",
+      driver: {
+        id: "",
+        name: "",
+      },
+      vehicle: {
+        id: "",
+        brand: "",
+      },
       status: "",
     },
   });
@@ -267,8 +273,8 @@ function OrderLists() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{modalData.deliveryOrder.driverId}</td>
-                  <td>{modalData.deliveryOrder.vehicleId}</td>
+                  <td>{modalData.deliveryOrder.driver?.name || "nil"}</td>
+                  <td>{modalData.deliveryOrder.vehicle.brand}</td>
                 </tr>
               </tbody>
             </table>
@@ -334,7 +340,7 @@ function OrderLists() {
                 {modalData.deliveryOrder.lineItems.map((item) => (
                   <tr key={item.id}>
                     <td>{item.id}</td>
-                    <td>{item.goodsId}</td>
+                    <td>{item.goods.name}</td>
                     <td>{item.quantity}</td>
                     <td>{item.unit}</td>
                   </tr>
