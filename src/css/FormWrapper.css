@@ -1,0 +1,38 @@
+.form {
+  display: flex;
+  justify-content: center;
+  height: 90vh;
+  align-items: center;
+}
+
+.form-container {
+  width: 100%;
+  align-items: center;
+  max-width: 400px;
+  margin: 20px 10px;
+
+  /* justify-content: space-around; */
+  padding: 20px;
+  background-color: #212121;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    width: 80%;
+  }
+}
+/* .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+} */

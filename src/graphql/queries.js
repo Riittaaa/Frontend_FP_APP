@@ -49,6 +49,8 @@ export const FETCH_VEHICLE = gql`
         status
         vehicleType
       }
+      message
+      errors
     }
   }
 `;

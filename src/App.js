@@ -15,9 +15,9 @@ import { ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import AddVehicle from "./components/vehicles/AddVehicle";
-import ViewVehicles from "./components/vehicles/ViewVehicles";
-import EditVehicle from "./components/vehicles/EditVehicle";
+import VehiclesList from "./features/vehicles/pages/VehiclesList";
+import AddVehicle from "./features/vehicles/pages/AddVehicle";
+import EditVehicle from "./features/vehicles/pages/EditVehicle";
 import ViewGoods from "./components/goods/ViewGoods";
 import AddGoods from "./components/goods/AddGoods";
 import EditGoods from "./components/goods/EditGoods";
@@ -33,9 +33,9 @@ import EditDriver from "./components/drivers/EditDriver";
 import OrderLists from "./components/orders/OrderLists";
 import AddOrder from "./components/orders/AddOrder";
 import EditOrder from "./components/orders/EditOrder";
-import ViewCategories from "./components/categories/ViewCategories";
-import AddCategory from "./components/categories/AddCategory";
-import EditCategory from "./components/categories/EditCategory";
+import CategoriesList from "./features/categories/pages/CategoriesList";
+import AddCategory from "./features/categories/pages/AddCategory";
+import EditCategory from "./features/categories/pages/EditCategory";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -70,15 +70,15 @@ function App() {
             />
 
             <Route
-              path="/addVehicle"
+              path="/vehicles/add"
               element={<ProtectedRoute element={<AddVehicle />} />}
             />
             <Route
               path="/vehicles"
-              element={<ProtectedRoute element={<ViewVehicles />} />}
+              element={<ProtectedRoute element={<VehiclesList />} />}
             />
             <Route
-              path="/editVehicle/:vehicleId"
+              path="/Vehicles/edit/:vehicleId"
               element={<ProtectedRoute element={<EditVehicle />} />}
             />
 
@@ -97,14 +97,14 @@ function App() {
 
             <Route
               path="/categories"
-              element={<ProtectedRoute element={<ViewCategories />} />}
+              element={<ProtectedRoute element={<CategoriesList />} />}
             />
             <Route
-              path="/addCategory"
+              path="/categories/add"
               element={<ProtectedRoute element={<AddCategory />} />}
             />
             <Route
-              path="/editCategory/:categoryId"
+              path="/categories/edit/:categoryId"
               element={<ProtectedRoute element={<EditCategory />} />}
             />
 
