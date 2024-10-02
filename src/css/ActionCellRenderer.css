@@ -1,0 +1,25 @@
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.action-button:hover {
+  opacity: 0.8;
+}
+
+.action-button--edit {
+  background-color: #4caf50;
+}
+
+.action-button--delete {
+  background-color: #f44336;
+}
