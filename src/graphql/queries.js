@@ -24,6 +24,7 @@ export const FETCH_VEHICLES = gql`
         licensePlate
         status
         vehicleType
+        deletedAt
       }
       errors
       message

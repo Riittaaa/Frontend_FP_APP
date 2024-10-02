@@ -46,6 +46,20 @@ export const UPDATE_VEHICLE = gql`
   }
 `;
 
+export const REACTIVATE_VEHICLE = gql`
+  mutation reactivateVehicle($vehicleId: ReactivateVehicleInput!) {
+    reactivateVehicle(input: $vehicleId) {
+      vehicle {
+        id
+        deletedAt
+        brand
+      }
+      errors
+      message
+    }
+  }
+`;
+
 export const DELETE_VEHICLE = gql`
   mutation deleteVehicle($deleteVehicleInput: DeleteVehicleInput!) {
     deleteVehicle(input: $deleteVehicleInput) {

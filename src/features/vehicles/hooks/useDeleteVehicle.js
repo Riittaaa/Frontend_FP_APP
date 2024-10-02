@@ -1,8 +1,10 @@
 import { DELETE_VEHICLE } from "../../../graphql/mutations";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
+import { FETCH_VEHICLES } from "../../../graphql/queries";
 
-const useDeleteVehicle = (setRowData) => {
+const useDeleteVehicle = () => {
+  const { refetch } = useQuery(FETCH_VEHICLES);
   const [deleteVehicle] = useMutation(DELETE_VEHICLE);
 
   const handleDelete = async (vehicleId) => {
@@ -17,9 +19,10 @@ const useDeleteVehicle = (setRowData) => {
         });
 
         if (response && response.data.deleteVehicle.message) {
-          setRowData((prevData) =>
-            prevData.filter((vehicle) => vehicle.id !== vehicleId)
-          );
+          await refetch();
+          // setRowData((prevData) =>
+          //   prevData.filter((vehicle) => vehicle.id !== vehicleId)
+          // );
           toast.success("Vehicle deleted successfully!!");
         } else {
           toast.error("Error", response.data.deleteVehicle.errors);
@@ -30,7 +33,7 @@ const useDeleteVehicle = (setRowData) => {
     }
   };
 
-  return { handleDelete, setRowData };
+  return { handleDelete };
 };
 
 export default useDeleteVehicle;

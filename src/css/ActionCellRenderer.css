@@ -23,3 +23,7 @@
 .action-button--delete {
   background-color: #f44336;
 }
+
+.action-button--reactivate {
+  background-color: #007bff;
+}
