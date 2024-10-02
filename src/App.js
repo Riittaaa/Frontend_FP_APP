@@ -15,9 +15,9 @@ import { ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import AddVehicle from "./components/vehicles/AddVehicle";
-import ViewVehicles from "./components/vehicles/ViewVehicles";
-import EditVehicle from "./components/vehicles/EditVehicle";
+import VehiclesList from "./features/vehicles/pages/VehiclesList";
+import AddVehicle from "./features/vehicles/pages/AddVehicle";
+import EditVehicle from "./features/vehicles/pages/EditVehicle";
 import ViewGoods from "./components/goods/ViewGoods";
 import AddGoods from "./components/goods/AddGoods";
 import EditGoods from "./components/goods/EditGoods";
@@ -70,15 +70,15 @@ function App() {
             />
 
             <Route
-              path="/addVehicle"
+              path="/vehicles/add"
               element={<ProtectedRoute element={<AddVehicle />} />}
             />
             <Route
               path="/vehicles"
-              element={<ProtectedRoute element={<ViewVehicles />} />}
+              element={<ProtectedRoute element={<VehiclesList />} />}
             />
             <Route
-              path="/editVehicle/:vehicleId"
+              path="/Vehicles/edit/:vehicleId"
               element={<ProtectedRoute element={<EditVehicle />} />}
             />
 
