@@ -33,9 +33,9 @@ import EditDriver from "./components/drivers/EditDriver";
 import OrderLists from "./components/orders/OrderLists";
 import AddOrder from "./components/orders/AddOrder";
 import EditOrder from "./components/orders/EditOrder";
-import ViewCategories from "./components/categories/ViewCategories";
-import AddCategory from "./components/categories/AddCategory";
-import EditCategory from "./components/categories/EditCategory";
+import CategoriesList from "./features/categories/pages/CategoriesList";
+import AddCategory from "./features/categories/pages/AddCategory";
+import EditCategory from "./features/categories/pages/EditCategory";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -97,14 +97,14 @@ function App() {
 
             <Route
               path="/categories"
-              element={<ProtectedRoute element={<ViewCategories />} />}
+              element={<ProtectedRoute element={<CategoriesList />} />}
             />
             <Route
-              path="/addCategory"
+              path="/categories/add"
               element={<ProtectedRoute element={<AddCategory />} />}
             />
             <Route
-              path="/editCategory/:categoryId"
+              path="/categories/edit/:categoryId"
               element={<ProtectedRoute element={<EditCategory />} />}
             />
 
