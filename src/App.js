@@ -27,9 +27,6 @@ import EditCustomer from "./components/customers/EditCustomer";
 import ViewBranches from "./components/customer_branches/ViewBranches";
 import AddBranch from "./components/customer_branches/AddBranch";
 import EditBranch from "./components/customer_branches/EditBranch";
-import ViewDrivers from "./components/drivers/ViewDrivers";
-import AddDriver from "./components/drivers/AddDriver";
-import EditDriver from "./components/drivers/EditDriver";
 import OrderLists from "./components/orders/OrderLists";
 import AddOrder from "./components/orders/AddOrder";
 import EditOrder from "./components/orders/EditOrder";
@@ -38,6 +35,9 @@ import AddCategory from "./features/categories/pages/AddCategory";
 import EditCategory from "./features/categories/pages/EditCategory";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DriversList from "./features/drivers/pages/DriversList";
+import AddDriver from "./features/drivers/pages/AddDriver";
+import EditDriver from "./features/drivers/pages/EditDriver";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -135,14 +135,15 @@ function App() {
 
             <Route
               path="/drivers"
-              element={<ProtectedRoute element={<ViewDrivers />} />}
+              element={<ProtectedRoute element={<DriversList />} />}
             />
             <Route
-              path="/addDriver"
+              path="/drivers/add"
               element={<ProtectedRoute element={<AddDriver />} />}
             />
+
             <Route
-              path="/editDriver/:driverId"
+              path="/drivers/edit/:driverId"
               element={<ProtectedRoute element={<EditDriver />} />}
             />
 
