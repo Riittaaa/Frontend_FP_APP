@@ -14,6 +14,8 @@ Modal.setAppElement("#root");
 function OrderLists() {
   const navigate = useNavigate();
   const [rowData, setRowData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchDate, setSearchDate] = useState("");
   const { data, loading, error } = useQuery(FETCH_ORDERGROUPS);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,8 +53,24 @@ function OrderLists() {
   useEffect(() => {
     if (data && data.allOrderGroup) {
       setRowData(data.allOrderGroup);
+      setFilteredData(data.allOrderGroup);
     }
   }, [data]);
+
+  const handleSearch = (e) => {
+    const inputDate = e.target.value;
+    setSearchDate(inputDate);
+
+    // Filter orders based on the plannedAt date
+    const filteredOrders = rowData.filter((order) => {
+      const orderDate = new Date(order.order.plannedAt)
+        .toISOString()
+        .split("T")[0];
+      return orderDate === inputDate;
+    });
+
+    setFilteredData(filteredOrders);
+  };
 
   const ActionCellRenderer = (params) => {
     return (
@@ -106,6 +124,15 @@ function OrderLists() {
     <div className="orders">
       <div className="orders__header">
         <h2>Order Groups</h2>
+        <div className="filter">
+          <label htmlFor="search">Search by date: </label>
+          <input
+            type="date"
+            value={searchDate}
+            onChange={handleSearch}
+            className="search-input"
+          />
+        </div>
         <button className="orders__add-button" onClick={handleAddOrder}>
           + Add Order
         </button>
@@ -113,7 +140,7 @@ function OrderLists() {
 
       <div className="orders__table ag-theme-material-dark">
         <AgGridReact
-          rowData={rowData}
+          rowData={filteredData}
           columnDefs={[
             {
               field: "order.id",
@@ -274,7 +301,7 @@ function OrderLists() {
               <tbody>
                 <tr>
                   <td>{modalData.deliveryOrder.driver?.name || "nil"}</td>
-                  <td>{modalData.deliveryOrder.vehicle.brand}</td>
+                  <td>{modalData.deliveryOrder.vehicle?.brand}</td>
                 </tr>
               </tbody>
             </table>
