@@ -21,9 +21,6 @@ import EditVehicle from "./features/vehicles/pages/EditVehicle";
 import ViewGoods from "./components/goods/ViewGoods";
 import AddGoods from "./components/goods/AddGoods";
 import EditGoods from "./components/goods/EditGoods";
-import ViewCustomers from "./components/customers/ViewCustomers";
-import AddCustomer from "./components/customers/AddCustomer";
-import EditCustomer from "./components/customers/EditCustomer";
 import ViewBranches from "./components/customer_branches/ViewBranches";
 import AddBranch from "./components/customer_branches/AddBranch";
 import EditBranch from "./components/customer_branches/EditBranch";
@@ -38,6 +35,9 @@ import "react-toastify/dist/ReactToastify.css";
 import DriversList from "./features/drivers/pages/DriversList";
 import AddDriver from "./features/drivers/pages/AddDriver";
 import EditDriver from "./features/drivers/pages/EditDriver";
+import CustomersList from "./features/customers/pages/CustomersList";
+import AddCustomer from "./features/customers/pages/AddCustomer";
+import EditCustomer from "./features/customers/pages/EditCustomer";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -110,14 +110,14 @@ function App() {
 
             <Route
               path="/customers"
-              element={<ProtectedRoute element={<ViewCustomers />} />}
+              element={<ProtectedRoute element={<CustomersList />} />}
             />
             <Route
-              path="/addCustomer"
+              path="/customers/add"
               element={<ProtectedRoute element={<AddCustomer />} />}
             />
             <Route
-              path="/editCustomer/:customerId"
+              path="/customers/edit/:customerId"
               element={<ProtectedRoute element={<EditCustomer />} />}
             />
             <Route
