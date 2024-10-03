@@ -34,3 +34,16 @@ export const FETCH_DRIVER = gql`
     }
   }
 `;
+
+export const FETCH_ACTIVE_DRIVERS = gql`
+  query activeDrivers {
+    activeDrivers {
+      id
+      name
+      phoneNo
+      email
+      address
+      status
+    }
+  }
+`;
