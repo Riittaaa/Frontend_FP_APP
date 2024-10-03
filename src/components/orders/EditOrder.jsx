@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./Orders.css";
 import {
   FETCH_BRANCHES,
-  FETCH_CUSTOMERS,
-  FETCH_DRIVERS,
   FETCH_GOODS,
   FETCH_UNITS,
-  FETCH_VEHICLES,
   FETCH_ORDERGROUP,
   FETCH_DELIVERY_STATUSES,
   FETCH_RECURRING_FREQUENCIES,
@@ -15,6 +12,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_ORDERGROUP } from "../../graphql/mutations";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FETCH_ACTIVE_DRIVERS } from "../../graphql/drivers/queries";
+import { FETCH_ACTIVE_VEHICLES } from "../../graphql/vehicles/queries";
+import { FETCH_ACTIVE_CUSTOMERS } from "../../graphql/customers/queries";
 
 function EditOrder() {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function EditOrder() {
     data: allCustomersData,
     loading: customersLoading,
     error: customersError,
-  } = useQuery(FETCH_CUSTOMERS);
+  } = useQuery(FETCH_ACTIVE_CUSTOMERS);
 
   const {
     data: allCustomerBranches,
@@ -70,13 +70,13 @@ function EditOrder() {
     data: allDriversData,
     loading: driversLoading,
     error: driversError,
-  } = useQuery(FETCH_DRIVERS);
+  } = useQuery(FETCH_ACTIVE_DRIVERS);
 
   const {
     data: allVehiclesData,
     loading: vehiclesLoading,
     error: vehiclesError,
-  } = useQuery(FETCH_VEHICLES);
+  } = useQuery(FETCH_ACTIVE_VEHICLES);
 
   const {
     data: statusData,
@@ -110,14 +110,14 @@ function EditOrder() {
     if (orderGroupData && orderGroupData.specificOrderGroup) {
       const data = orderGroupData.specificOrderGroup.order;
       setPlannedAt(data.plannedAt || "");
-      setCustomer(data.customer.id || "");
-      setCustomerBranch(data.customerBranch.id || "");
+      setCustomer(data.customer?.id || "");
+      setCustomerBranch(data.customerBranch?.id || "");
       setRecurring(data.recurring || false);
       setRecurrenceFrequency(data.recurrenceFrequency?.toUpperCase() || null);
       // setNextDueDate(data.nextDueDate || "");
       setRecurrenceEndDate(data.recurrenceEndDate || null);
-      setDriver(data.deliveryOrder.driver.id || "");
-      setVehicle(data.deliveryOrder.vehicle.id || "");
+      setDriver(data.deliveryOrder.driver?.id || "");
+      setVehicle(data.deliveryOrder.vehicle?.id || "");
       setStatus(data.deliveryOrder.status || "");
       // setDispatchedDate(data.deliveryOrder.dispatchedDate || "");
       // setDeliveryDate(data.deliveryOrder.deliveryDate || "");
@@ -245,7 +245,7 @@ function EditOrder() {
                 ) : customersError ? (
                   <option>Error loading customers</option>
                 ) : (
-                  allCustomersData?.allCustomers?.map((customer) => (
+                  allCustomersData?.activeCustomers?.map((customer) => (
                     <option key={customer.id} value={customer.id}>
                       {customer.name}
                     </option>
@@ -285,20 +285,19 @@ function EditOrder() {
             </div>
           </div>
 
-          <div className="order-form__group">
-            <label htmlFor="recurring" className="order-form__label">
-              Recurring
-            </label>
-            <input
-              type="checkbox"
-              id="recurring"
-              name="recurring"
-              checked={recurring}
-              onChange={(e) => setRecurring(e.target.checked)}
-              className="order-form__input-checkbox"
-            />
+          <div className="order-form__row">
+            <div className=" recurring-label">
+              <label htmlFor="recurring">Recurring</label>
+              <input
+                type="checkbox"
+                id="recurring"
+                name="recurring"
+                checked={recurring}
+                onChange={(e) => setRecurring(e.target.checked)}
+                className="order-form__input-checkbox"
+              />
+            </div>
           </div>
-
           {recurring && (
             <div className="order-form__row">
               <div className="order-form__group">
@@ -495,9 +494,9 @@ function EditOrder() {
                 ) : driversError ? (
                   <option>Error loading drivers</option>
                 ) : (
-                  allDriversData?.alldrivers?.map((driver) => (
-                    <option key={driver.id} value={driver.id}>
-                      {driver.name}
+                  allDriversData?.activeDrivers?.map((driver) => (
+                    <option key={driver?.id} value={driver?.id}>
+                      {driver?.name}
                     </option>
                   ))
                 )}
@@ -522,7 +521,7 @@ function EditOrder() {
                 ) : vehiclesError ? (
                   <option>Error loading vehicles</option>
                 ) : (
-                  allVehiclesData?.vehicles?.vehicle.map((vehicle) => (
+                  allVehiclesData?.activeVehicles?.vehicle.map((vehicle) => (
                     <option key={vehicle.id} value={vehicle.id}>
                       {vehicle.vehicleType}
                     </option>
@@ -600,7 +599,7 @@ function EditOrder() {
           </div>
         </form>
 
-        <a href="/dashboard" className="add-driver__link">
+        <a href="/dashboard" className="order__link">
           Back to Order Lists
         </a>
 

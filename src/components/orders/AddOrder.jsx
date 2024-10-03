@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import "./Orders.css";
 import {
   FETCH_BRANCHES,
-  FETCH_CUSTOMERS,
-  FETCH_DRIVERS,
   FETCH_GOODS,
   FETCH_RECURRING_FREQUENCIES,
   FETCH_UNITS,
-  FETCH_VEHICLES,
 } from "../../graphql/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_ORDERGROUP } from "../../graphql/mutations";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FETCH_ACTIVE_DRIVERS } from "../../graphql/drivers/queries";
+import { FETCH_ACTIVE_VEHICLES } from "../../graphql/vehicles/queries";
+import { FETCH_ACTIVE_CUSTOMERS } from "../../graphql/customers/queries";
 
 function AddOrder() {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ function AddOrder() {
     data: allCustomersData,
     loading: customersLoading,
     error: customersError,
-  } = useQuery(FETCH_CUSTOMERS);
+  } = useQuery(FETCH_ACTIVE_CUSTOMERS);
 
   const {
     data: allCustomerBranches,
@@ -71,13 +71,13 @@ function AddOrder() {
     data: allDriversData,
     loading: driversLoading,
     error: driversError,
-  } = useQuery(FETCH_DRIVERS);
+  } = useQuery(FETCH_ACTIVE_DRIVERS);
 
   const {
     data: allVehiclesData,
     loading: vehiclesLoading,
     error: vehiclesError,
-  } = useQuery(FETCH_VEHICLES);
+  } = useQuery(FETCH_ACTIVE_VEHICLES);
 
   // const {
   //   data: statusData,
@@ -192,7 +192,7 @@ function AddOrder() {
                 ) : customersError ? (
                   <option>Error loading customers</option>
                 ) : (
-                  allCustomersData?.allCustomers?.map((customer) => (
+                  allCustomersData?.activeCustomers?.map((customer) => (
                     <option key={customer.id} value={customer.id}>
                       {customer.name}
                     </option>
@@ -231,18 +231,18 @@ function AddOrder() {
               </select>
             </div>
           </div>
-          <div className="order-form__group">
-            <label htmlFor="recurring" className="order-form__label">
-              Recurring
-            </label>
-            <input
-              type="checkbox"
-              id="recurring"
-              name="recurring"
-              checked={recurring}
-              onChange={(e) => setRecurring(e.target.checked)}
-              className="order-form__input-checkbox"
-            />
+          <div className="order-form__row">
+            <div className=" recurring-label">
+              <label htmlFor="recurring">Recurring</label>
+              <input
+                type="checkbox"
+                id="recurring"
+                name="recurring"
+                checked={recurring}
+                onChange={(e) => setRecurring(e.target.checked)}
+                className="order-form__input-checkbox"
+              />
+            </div>
           </div>
           {recurring && (
             <div className="order-form__row">
@@ -423,7 +423,7 @@ function AddOrder() {
                 ) : driversError ? (
                   <option>Error loading drivers</option>
                 ) : (
-                  allDriversData?.alldrivers?.map((driver) => (
+                  allDriversData?.activeDrivers?.map((driver) => (
                     <option key={driver.id} value={driver.id}>
                       {driver.name}
                     </option>
@@ -450,7 +450,7 @@ function AddOrder() {
                 ) : vehiclesError ? (
                   <option>Error loading vehicles</option>
                 ) : (
-                  allVehiclesData?.vehicles?.vehicle.map((vehicle) => (
+                  allVehiclesData?.activeVehicles?.vehicle.map((vehicle) => (
                     <option key={vehicle.id} value={vehicle.id}>
                       {vehicle.vehicleType}
                     </option>
@@ -523,7 +523,7 @@ function AddOrder() {
           </div>
         </form>
 
-        <a href="/dashboard" className="add-driver__link">
+        <a href="/dashboard" className="order__link">
           Back to Order Lists
         </a>
 
